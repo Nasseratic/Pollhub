@@ -6,6 +6,11 @@
 
 <%@include file="/header.jsp" %>
 
+<div id="sd">
+    asd
+</div>
 
-
+<script>
+    var arr = <%= request.getAttribute("jskdhj") %>;
+</script>
 <%@include file="/footer.jsp" %> 
