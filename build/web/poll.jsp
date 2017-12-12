@@ -6,11 +6,17 @@
 
 <%@include file="/header.jsp" %>
 
-<div id="sd">
-    asd
-</div>
+<!-- registration form -->
 
 <script>
-    var arr = <%= request.getAttribute("jskdhj") %>;
+    
+    new Vue({
+        
+    });
+    
 </script>
+
 <%@include file="/footer.jsp" %> 
+
+<!-- Get poll questions -->
+

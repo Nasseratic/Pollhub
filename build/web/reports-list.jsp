@@ -1,6 +1,6 @@
 <%-- 
-    Document   : poll
-    Created on : Dec 7, 2017, 11:53:06 AM
+    Document   : view-reports
+    Created on : Dec 12, 2017, 1:53:12 AM
     Author     : LENOVO
 --%>
 
@@ -17,6 +17,3 @@
 </script>
 
 <%@include file="/footer.jsp" %> 
-
-<!-- Get poll questions -->
-

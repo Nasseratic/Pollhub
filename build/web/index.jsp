@@ -6,6 +6,16 @@
 
 <%@include file="/header.jsp" %>
 
+<!-- intro , some polls form -->
 
+<script>
+    
+    new Vue({
+        
+    });
+    
+</script>
 
-<%@include file="/footer.jsp" %> 
+<%@include file="/footer.jsp" %>
+
+<!-- Get all polls  -->

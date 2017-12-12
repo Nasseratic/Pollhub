@@ -4,14 +4,51 @@
     Author     : LENOVO
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<%@include file="/header.jsp" %>
+<br/>
+<br/>
+<div class="card"  style="padding: 50px;">
+    <h2 class="is-size-3 has-text-centered"> USER SIGN UP </h2>
+    <br/>
+<form class="container" action="test?op=login" method="POST" style="max-width: 350px;">
+    <div class="field">
+        <div class="control">
+          <input class="input" v-model="username" @keyup="checkUserExists()" name="username" type="text" placeholder="User Name">
+        </div>
+      </div>
+    <div class="field">
+        <div class="control">
+          <input class="input" name="email" type="text" placeholder="Email">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="input" name="password" type="password" placeholder="Password">
+        </div>
+      </div>
+
+      <button class="button is-primary is-medium btn-text is-centered" type="submit">SIGN UP</button>
+</form>
+</div>
+<script>
+    
+    new Vue({
+        el:"form",
+        data(){
+          return { username: "" , isValid: true , loginError: false };
+        },
+        methods:{
+            checkUserExists(){
+                axios.get('User?op=unique&username='+this.username).then( res => {
+                    this.isValid = res;
+                });
+            }
+        }
+    });
+    
+</script>
+
+<%@include file="/footer.jsp" %> 
+
+
+

@@ -1,12 +1,12 @@
 <%-- 
-    Document   : poll
-    Created on : Dec 7, 2017, 11:53:06 AM
+    Document   : report-view
+    Created on : Dec 12, 2017, 12:47:10 PM
     Author     : LENOVO
 --%>
 
 <%@include file="/header.jsp" %>
 
-<!-- registration form -->
+
 
 <script>
     
@@ -17,6 +17,3 @@
 </script>
 
 <%@include file="/footer.jsp" %> 
-
-<!-- Get poll questions -->
-
