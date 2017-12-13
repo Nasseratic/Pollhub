@@ -8,7 +8,6 @@
 <!DOCTYPE html>
 <html class="has-navbar-fixed-top">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>PollHub</title>
         <link rel="stylesheet" href="assets/css/bulma.css" />        
         <link rel="stylesheet" href="assets/css/ionicons.min.css" />
@@ -71,7 +70,7 @@
                         <div class="navbar-item">
                             <div class="field is-grouped">
                                 <p class="control">
-                                    <a class="button" href="login.jsp">
+                                    <a class="button" href="user-login.jsp">
                                         <span class="icon">
                                             <i class="ion-log-in"></i>
                                         </span>
