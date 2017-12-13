@@ -6,12 +6,23 @@
 
 <%@include file="/header.jsp" %>
 
-<!-- registration form -->
+<div id="poll" class="container">
+    
+    <div class="card" v-for="question of poll.questions">
+        
+    </div>
+    
+</div>
 
 <script>
     
     new Vue({
-        
+        el: "#poll",
+        data(){
+            return {
+                poll : {} // TODO POLL DATA INCLODING ALL QESTIONS 
+            };
+        }
     });
     
 </script>

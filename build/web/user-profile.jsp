@@ -13,10 +13,12 @@
     </h3>
     <br/>
     <div class="container">
-        <div id="mypolls" class="columns">
-            <div class="card column" v-for="poll of polls" >
-                <div class="card-content">
-                    HEY
+        <div id="myPolls" class="columns is-multiline">
+            <div class="column is-4" v-for="poll of polls" >
+                <div class="card">
+                    <div class="card-content">
+                        HEY
+                    </div>
                 </div>
             </div>
         </div>
@@ -25,10 +27,10 @@
 <script>
 
     new Vue({
-        el: "#mypolls",
+        el: "#myPolls",
         data() {
             return {
-                polls: [ 1 , 2 , 3 ]
+                polls: [1, 2, 3, 4, 5] // #TODO HERE WE GET THE ARRAY OF THE POLLS OF THE USER
             };
         }
     });

@@ -10,42 +10,42 @@
 <div class="card"  style="padding: 50px;">
     <h2 class="is-size-3 has-text-centered"> USER SIGN UP </h2>
     <br/>
-<form class="container" action="test?op=login" method="POST" style="max-width: 350px;">
-    <div class="field">
-        <div class="control">
-          <input class="input" v-model="username" @keyup="checkUserExists()" name="username" type="text" placeholder="User Name">
+    <form class="container" action="test?op=login" method="POST" style="max-width: 350px;">
+        <div class="field">
+            <div class="control">
+                <input class="input" v-model="username" @keyup="checkUserExists()" name="username" type="text" placeholder="User Name">
+            </div>
         </div>
-      </div>
-    <div class="field">
-        <div class="control">
-          <input class="input" name="email" type="text" placeholder="Email">
+        <div class="field">
+            <div class="control">
+                <input class="input" name="email" type="text" placeholder="Email">
+            </div>
         </div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <input class="input" name="password" type="password" placeholder="Password">
+        <div class="field">
+            <div class="control">
+                <input class="input" name="password" type="password" placeholder="Password">
+            </div>
         </div>
-      </div>
 
-      <button class="button is-primary is-medium btn-text is-centered" type="submit">SIGN UP</button>
-</form>
+        <button class="button is-primary is-medium btn-text is-centered" type="submit">SIGN UP</button>
+    </form>
 </div>
 <script>
-    
+
     new Vue({
-        el:"form",
-        data(){
-          return { username: "" , isValid: true , loginError: false };
+        el: "form",
+        data() {
+            return {username: "", isValid: true, loginError: false};
         },
-        methods:{
-            checkUserExists(){
-                axios.get('User?op=unique&username='+this.username).then( res => {
+        methods: {
+            checkUserExists() {
+                axios.get('User?op=unique&username=' + this.username).then(res => {
                     this.isValid = res;
                 });
             }
         }
     });
-    
+
 </script>
 
 <%@include file="/footer.jsp" %> 
