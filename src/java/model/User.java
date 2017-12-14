@@ -18,4 +18,5 @@ public class User {
     public boolean isAdmin;
     public boolean isSuspended;
     
+    
 }
