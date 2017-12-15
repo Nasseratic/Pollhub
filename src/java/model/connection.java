@@ -21,7 +21,7 @@ public class connection {
     
     String url = "jdbc:mysql://localhost:3306/pollhub";
                         final String user = "root";
-                        final String password = "";
+                        final String password = "root";
                
                         
    public Connection connect(){
@@ -32,8 +32,9 @@ public class connection {
             Logger.getLogger(connection.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            
+             System.out.println("model.connection.connect()+++++++++++++++++++++++++++++++++++++++++");
             return DriverManager.getConnection(url, user, password);
+           
             
            
         } catch (SQLException ex) {

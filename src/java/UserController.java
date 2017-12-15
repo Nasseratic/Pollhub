@@ -14,7 +14,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import Crud.UserCrud;
+import Crud.MessageCrud;
+import model.Message;
 import model.User;
 
 /**
@@ -38,11 +39,11 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            UserCrud u = new UserCrud();
+            MessageCrud u = new MessageCrud() ;
             try {
-                List<User> users = u.selectById(2);
-           
-                System.out.println(users.get(0).username);
+               // List<User> users = u.selectById(2);
+           u.add("jbgkkbbgk", true);
+               // System.out.println(users.get(0).username);
                 
             } catch (SQLException ex) {
                 System.out.println("loooooooooooooooooooool");
