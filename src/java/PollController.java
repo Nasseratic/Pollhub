@@ -6,11 +6,16 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import com.google.gson.Gson;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Poll;
+import model.User;
 
 /**
  *
@@ -33,15 +38,46 @@ public class PollController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PollController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PollController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+
+            String op = request.getParameter("op");
+            HttpSession session = request.getSession();
+            int id = (int) session.getAttribute("session_userid");
+            if (id < 0) {
+                response.sendRedirect("user-login.jsp");
+            } else {
+
+                //Add poll
+                switch (op) {
+                    case "add":
+                         User data = new Gson().fromJson(request.getParameter("plls"), User.class);
+                        
+                       
+                        break;
+                    case "getAllForUser":
+                        break;
+                    case "getAllForSystem":
+                        break;
+                    case "answerPoll":
+                        break;
+                    case "delAll":
+                        break;
+                    case "getAllWithEverything":
+                        break;
+                    case "getAllWithEverythingForEdit":
+                        break;
+                    case "suspend":
+                        break;
+                    case "unsuspend":
+                        break;
+                    case "close":
+                        break;
+                    case "open":
+                        break;
+                    default:
+                        break;
+                }
+            }
+
         }
     }
 
