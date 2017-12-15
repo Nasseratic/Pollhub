@@ -11,4 +11,10 @@ package model;
  */
 public class Answer {
     
+    public int answerid;
+    public int question;
+    public String content;
+    public int user;
+    public boolean isrevailed;
+    
 }

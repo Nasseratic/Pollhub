@@ -11,4 +11,10 @@ package model;
  */
 public class Question {
     
+    public int questionid;
+    public String content;
+    public String type;
+    public int poll;
+    public String answer;
+    
 }

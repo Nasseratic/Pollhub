@@ -11,4 +11,11 @@ package model;
  */
 public class Poll {
     
+    public String title;
+    public int pollid;
+    public int user;
+    public boolean aissuspended;
+    public boolean uissuspended;
+    public boolean close;
+    
 }
