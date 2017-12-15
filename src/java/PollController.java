@@ -4,9 +4,13 @@
  * and open the template in the editor.
  */
 
+import Crud.AnswerCrud;
+import Crud.PollCrud;
 import java.io.IOException;
 import java.io.PrintWriter;
 import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Poll;
+import model.Question;
 import model.User;
 
 /**
@@ -41,37 +46,70 @@ public class PollController extends HttpServlet {
 
             String op = request.getParameter("op");
             HttpSession session = request.getSession();
-            int id = (int) session.getAttribute("session_userid");
-            if (id < 0) {
+            int userId = (int) session.getAttribute("session_userid");
+            if (userId < 0) {
                 response.sendRedirect("user-login.jsp");
             } else {
 
                 //Add poll
+                PollCrud pollCrud = new PollCrud();
+                int pollId = request.getParameter("pollId");
                 switch (op) {
                     case "add":
-                         User data = new Gson().fromJson(request.getParameter("plls"), User.class);
-                        
-                       
+                        Poll poll = new Gson().fromJson(request.getParameter("polls"), Poll.class);
+
+                        pollCrud.add(poll.title, userId, poll.aissuspended, poll.uissuspended, poll.close, poll.questions);
+                        ///response.sendRedirect("user-login.jsp"); need to know where
+
                         break;
                     case "getAllForUser":
+
+                        String polls;
+                        polls = new Gson.toJson(pollCrud.selectByUserId(userId));
+                        request.setAttribute("polls", polls);
+                        //response.sendRedirect("user-login.jsp"); need to know where
+
                         break;
                     case "getAllForSystem":
+                        polls = new Gson.toJson(pollCrud.selectall());
+                        request.setAttribute("polls", polls);
+                        //response.sendRedirect("user-login.jsp"); need to know where
                         break;
                     case "answerPoll":
+                        Question question = new Gson().fromJson(request.getParameter("questions"), Question.class);
+                        AnswerCrud answerCrud = new AnswerCrud();
+                        answerCrud.addAnswers(question.answers);
+                        //response.sendRedirect("user-login.jsp"); need to know where
+
                         break;
                     case "delAll":
                         break;
                     case "getAllWithEverything":
-                        break;
-                    case "getAllWithEverythingForEdit":
+                        List<Poll> pollss = pollCrud.selectall();
+                        //Need to know about that
+
                         break;
                     case "suspend":
+                        
+                        pollCrud.suspend(session.getAttribute("session_IsAdmin"), pollId);
+                        request.setAttribute("suspended","done");
+                        //response.sendRedirect("user-login.jsp"); need to know where
                         break;
                     case "unsuspend":
+                     
+                        pollCrud.suspend(session.getAttribute("session_IsAdmin"), pollId);
+                        request.setAttribute("suspended","done");
+                        //response.sendRedirect("user-login.jsp"); need to know where
                         break;
                     case "close":
+                        pollCrud.close(pollId);
+                        request.setAttribute("close","done");
+                        //response.sendRedirect("user-login.jsp"); need to know where
                         break;
                     case "open":
+                        pollCrud.open(pollId);
+                        request.setAttribute("open","done");
+                        //response.sendRedirect("user-login.jsp"); need to know where
                         break;
                     default:
                         break;

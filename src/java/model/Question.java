@@ -5,10 +5,20 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author y
  */
 public class Question {
+    
+    public int questionid;
+    public String content;
+    public String type;
+    public int poll;
+    public String answer;
+    public ArrayList<Answer> answers;
+    
     
 }
