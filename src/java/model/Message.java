@@ -10,5 +10,7 @@ package model;
  * @author y
  */
 public class Message {
-    
+    public int massageid;
+    public String content;
+    public boolean  ischecked;
 }
