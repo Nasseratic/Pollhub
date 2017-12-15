@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Crud;
+package crud;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,11 +54,11 @@ public class UserCrud {
 
     }
 
-    public void delete(int id) throws SQLException {
+    public void delete(String username) throws SQLException {
         try (Connection c = conn.connect()) {
-            String deleteSQL = "DELETE FROM user WHERE userId = ?";
+            String deleteSQL = "DELETE FROM user WHERE username = ?";
             try (PreparedStatement delete = c.prepareStatement(deleteSQL)) {
-                delete.setInt(1, id);
+                delete.setString(1, username);
                 delete.executeUpdate();
                 System.out.println("delete is done successfully");
                 delete.close();
@@ -96,14 +96,14 @@ public class UserCrud {
 
     }
 
-    public List<User> selectById(int id) throws SQLException {
+    public List<User> selectById(String username) throws SQLException {
         ResultSet resultSet;
 
         List<User> users = new ArrayList<>();
         try (Connection c = conn.connect()) {
-            String selectSQL = "SELECT * FROM user WHERE userId= ? ";
+            String selectSQL = "SELECT * FROM user WHERE username= ? ";
             try (PreparedStatement select = c.prepareStatement(selectSQL)) {
-                select.setInt(1, id);
+                select.setString(1, username);
                 resultSet = select.executeQuery();
                 while (resultSet.next()) {
                     User user = new User();
