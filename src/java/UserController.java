@@ -41,8 +41,8 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
          
-            String op="";
-                 op= request.getParameter("op");
+            String op = "";
+            op = request.getParameter("op");
                  if (op.equals("login")){
              String username=request.getParameter("username");
             String pass=request.getParameter("password");
