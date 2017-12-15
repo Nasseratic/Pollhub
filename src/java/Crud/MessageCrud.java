@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Crud;
+package crud;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Message;
 import model.connection;
 
@@ -21,20 +23,25 @@ import model.connection;
 public class MessageCrud {
      connection conn = new connection();
 
-    public void add( String content, boolean ischecked) throws SQLException {
+    public void add( String content, boolean ischecked)  {
 
-        try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO massage (content ,ischeked)VALUES( ?, ?)")) {
+        try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO massage (content ,ischecked)VALUES(?,?)")) {
             add.setString(1, content);
-            
+       
             add.setBoolean(2, ischecked);
 
-            add.executeUpdate();
+          add.executeUpdate();
             add.close();
             c.close();
-            System.out.println("555555555555555555555555555555555555Insert is done successfully");
-        }
+             System.out.println("++++++++++++++++++++++++++++++++++Insert is done successfully");
+          
+        } catch (SQLException ex) {
+             Logger.getLogger(MessageCrud.class.getName()).log(Level.SEVERE, null, ex);
+               System.out.println("555555555555555555555555555555555555Insert is done successfully");
+               
+         }
 
-        System.out.println("++++++++++++++++++++++++++++++++++Insert is done successfully");
+       
 
     }
 

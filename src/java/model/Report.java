@@ -11,4 +11,8 @@ package model;
  */
 public class Report {
     
+     public int reportid;
+    public String content;
+    public boolean  ischecked;
+    
 }
