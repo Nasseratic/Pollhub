@@ -10,20 +10,20 @@
 <div class="card"  style="padding: 50px;">
     <h2 class="is-size-3 has-text-centered"> USER SIGN UP </h2>
     <br/>
-    <form class="container" action="test?op=login" method="POST" style="max-width: 350px;">
+    <form class="container" action="UserCrud?op=signup" method="POST" style="max-width: 350px;">
         <div class="field">
             <div class="control">
-                <input class="input" v-model="username" @keyup="checkUserExists()" name="username" type="text" placeholder="User Name">
+                <input class="input" v-model="username" @keyup="checkUserExists()" required name="username" type="text" placeholder="User Name">
             </div>
         </div>
         <div class="field">
             <div class="control">
-                <input class="input" name="email" type="text" placeholder="Email">
+                <input class="input" name="email" type="text" placeholder="Email" required>
             </div>
         </div>
         <div class="field">
             <div class="control">
-                <input class="input" name="password" type="password" placeholder="Password">
+                <input class="input" name="password" type="password" placeholder="Password" required>
             </div>
         </div>
 
@@ -34,13 +34,15 @@
 
     new Vue({
         el: "form",
-        data() {
+        data(){
             return {username: "", isValid: true, loginError: false};
         },
         methods: {
             checkUserExists() {
-                axios.get('User?op=unique&username=' + this.username).then(res => {
+                console.log(this.username);
+                axios.get('UserCrud?op=unique&username=' + this.username).then(res => {
                     this.isValid = res;
+                    console.log(this.username);
                 });
             }
         }

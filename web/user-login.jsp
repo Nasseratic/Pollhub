@@ -10,7 +10,7 @@
 <div class="card"  style="padding: 50px;">
     <h2 class="is-size-2 has-text-centered"> USER LOGIN </h2>
     <br/>
-<form class="container" action="test?op=login" method="POST" style="max-width: 350px;">
+<form class="container" action="UserCrud?op=login" method="POST" style="max-width: 350px;">
           <div class="field">
             <div class="control">
               <input class="input" name="username" type="text" placeholder="User Name">
@@ -27,10 +27,10 @@
 </div>
 <script>
     
-    new Vue({
-        
-    });
-    
+//    new Vue({
+//        
+//    });
+//    
 </script>
 
 <%@include file="/footer.jsp" %> 

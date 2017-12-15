@@ -6,7 +6,12 @@
 
 <%@include file="/header.jsp" %>
 
-<!-- registration form -->
+<div class="container card">
+    <table class="table is-bordered">
+        <tbody>
+        </tbody>
+    </table>
+</div>
 
 <script>
     

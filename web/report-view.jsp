@@ -7,20 +7,17 @@
 <%@include file="/header.jsp" %>
 
 <div id="report" class="container">
-    
+
 </div>
 
 
 <script>
     
-    new Vue({
-        el: '#report',
-        data(){
-            return {
-                report : {} // TODO GET A REPORT DATA   
-            };
-        }
-    });
+//    function suspend(){
+//        axios.get('Poll').then( () =>{ 
+//        
+//        });
+//    }
     
 </script>
 
