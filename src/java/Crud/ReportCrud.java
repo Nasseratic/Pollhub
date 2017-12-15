@@ -38,7 +38,7 @@ public class ReportCrud {
 
     }
 
-    public void update(int id,String content, boolean ischecked ) throws SQLException {
+    public void update(int id, String content, boolean ischecked ) throws SQLException {
         try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE report SET content = ?,  ischecked=? WHERE  massageid= ?")) {
            update.setString(1, content);
             update.setBoolean(2, ischecked);
