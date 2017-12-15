@@ -9,7 +9,6 @@ import Crud.PollCrud;
 import java.io.IOException;
 import java.io.PrintWriter;
 import com.google.gson.Gson;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Poll;
 import model.Question;
-import model.User;
 
 /**
  *
@@ -54,9 +52,10 @@ public class PollController extends HttpServlet {
                 //Add poll
                 PollCrud pollCrud = new PollCrud();
                 int pollId = request.getParameter("pollId");
+                Gson json = new Gson();
                 switch (op) {
                     case "add":
-                        Poll poll = new Gson().fromJson(request.getParameter("polls"), Poll.class);
+                        Poll poll = json.fromJson(request.getParameter("polls"), Poll.class);
 
                         pollCrud.add(poll.title, userId, poll.aissuspended, poll.uissuspended, poll.close, poll.questions);
                         ///response.sendRedirect("user-login.jsp"); need to know where
@@ -65,13 +64,13 @@ public class PollController extends HttpServlet {
                     case "getAllForUser":
 
                         String polls;
-                        polls = new Gson.toJson(pollCrud.selectByUserId(userId));
+                        polls = json.toJson(pollCrud.selectByUserId(userId));
                         request.setAttribute("polls", polls);
                         //response.sendRedirect("user-login.jsp"); need to know where
 
                         break;
                     case "getAllForSystem":
-                        polls = new Gson.toJson(pollCrud.selectall());
+                        polls = json.toJson(pollCrud.selectall());
                         request.setAttribute("polls", polls);
                         //response.sendRedirect("user-login.jsp"); need to know where
                         break;

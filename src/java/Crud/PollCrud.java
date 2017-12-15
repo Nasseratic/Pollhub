@@ -176,27 +176,29 @@ public class PollCrud {
         }
 
     }
+
     public void close(int pollId) throws SQLException {
 
-            try (Connection c = conn.connect(); PreparedStatement close = c.prepareStatement("UPDATE user SET close = ? WHERE pollid = ?")) {
-                close.setBoolean(1, true);
-                close.setInt(2, pollId);
-                close.close();
-                c.close();
-            
+        try (Connection c = conn.connect(); PreparedStatement close = c.prepareStatement("UPDATE user SET close = ? WHERE pollid = ?")) {
+            close.setBoolean(1, true);
+            close.setInt(2, pollId);
+            close.close();
+            c.close();
+
         }
-        
+
     }
+
     public void open(int pollId) throws SQLException {
 
-            try (Connection c = conn.connect(); PreparedStatement open = c.prepareStatement("UPDATE user SET close = ? WHERE pollid = ?")) {
-                open.setBoolean(1, false);
-                open.setInt(2, pollId);
-                open.close();
-                c.close();
-            
+        try (Connection c = conn.connect(); PreparedStatement open = c.prepareStatement("UPDATE user SET close = ? WHERE pollid = ?")) {
+            open.setBoolean(1, false);
+            open.setInt(2, pollId);
+            open.close();
+            c.close();
+
         }
-        
+
     }
 
 }
