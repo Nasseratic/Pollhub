@@ -1,10 +1,12 @@
+package controllers;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-import Crud.MessageCrud;
+import crud.ReportCrud;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,10 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author mohamed
+ * @author y
  */
-@WebServlet(urlPatterns = {"/MessageController"})
-public class MessageController extends HttpServlet {
+@WebServlet(urlPatterns = {"/ReportController"})
+public class ReportController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,53 +41,53 @@ public class MessageController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             
             String op = request.getParameter("op");
-            MessageCrud msg = new MessageCrud();
+            ReportCrud report = new ReportCrud();
             
             if(op == "add"){
                 
                 String content = request.getParameter("content");
+                int poll = Integer.parseInt(request.getParameter("poll"));
                 boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
                 
-                msg.add(content, isChecked);
+                report.add(content, poll, isChecked);
+                        
                 
             }
             else if(op == "delete"){
                 
-                int messageid = Integer.parseInt(request.getParameter("messageid"));
+                int reportid = Integer.parseInt(request.getParameter("reportid"));
                 
-                msg.delete(messageid);
+                report.delete(reportid);
                 
             }
             else if(op == "update"){
                 
-                int messageid = Integer.parseInt(request.getParameter("messageid"));
+                int reportid = Integer.parseInt(request.getParameter("reportid"));
                 String content = request.getParameter("content");
+                int poll = Integer.parseInt(request.getParameter("poll"));
                 boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
                 
-                msg.update(messageid, content, isChecked);
+                report.update(reportid, content, isChecked);
                 
             }
             else if(op == "selectAll"){
                 
-                msg.selectall();
-                
+                report.selectall();
                 
             }
             else if(op == "selectById"){
                 
-                int messageid = Integer.parseInt(request.getParameter("messageid"));
+                int reportid = Integer.parseInt(request.getParameter("reportid"));
                 
-                msg.selectById(messageid);
+                report.selectById(reportid);
                 
             }
-
-        
-    }   catch (SQLException ex) {
-            Logger.getLogger(MessageController.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportController.class.getName()).log(Level.SEVERE, null, ex);
         }
             
-            
-}
+        }
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -126,6 +128,5 @@ public class MessageController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

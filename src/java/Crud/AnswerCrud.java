@@ -19,35 +19,44 @@ import model.connection;
  * @author y
  */
 public class AnswerCrud {
-    
+
     connection conn = new connection();
 
-    public void add(int question, String content, int user, boolean isrevailed) throws SQLException {
+    public void addAnswers(ArrayList<Answer> answers) throws SQLException {
 
         try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO answer (question, content, user, isrevailed) VALUES ( ?, ?, ?, ?)")) {
-            add.setInt(1, question);
-            add.setString(2, content);
-            add.setInt(3, user);
-            add.setBoolean(4, isrevailed);
-            
-            add.executeUpdate();
+            for (int i = 0; i < answers.size(); i++) {
+
+                add.setInt(1, answers.get(i).question);
+                add.setString(2, answers.get(i).content);
+                add.setInt(3, answers.get(i).user);
+                add.setBoolean(4, answers.get(i).isrevailed);
+
+                add.executeUpdate();
+            }
+
             add.close();
             c.close();
         }
 
-        System.out.println("+++++++++++++++++++++++++++++++Insert is done successfully");
+        System.out.println("Insert is done successfully");
 
     }
 
-    public void update(int answerid, int question, String content, int user, boolean isrevailed) throws SQLException {
+    public void updateAnswers(ArrayList<Answer> answers) throws SQLException {
         try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE answer SET question = ?, content = ?, user = ?, isrevailed = ? WHERE answerid = ?")) {
-            update.setInt(1, question);
-            update.setString(2, content);
-            update.setInt(3, user);
-            update.setBoolean(4, isrevailed);
-            update.setInt(6, answerid);
-            
-            update.executeUpdate();
+
+            for (int i = 0; i < answers.size(); i++) {
+                update.setInt(1, answers.get(i).question);
+                update.setString(2, answers.get(i).content);
+                update.setInt(3, answers.get(i).user);
+                update.setBoolean(4, answers.get(i).isrevailed);
+                update.setInt(5, answers.get(i).answerid);
+
+                update.executeUpdate();
+
+            }
+
             update.close();
             c.close();
         }
@@ -85,10 +94,10 @@ public class AnswerCrud {
                     answer.content = resultSet.getString("content");
                     answer.user = resultSet.getInt("user");
                     answer.isrevailed = resultSet.getBoolean("isrevailed");
-                    
+
                     answers.add(answer);
                 }
-                
+
                 System.out.println("Selection is done successfully");
                 select.close();
                 c.close();
@@ -100,12 +109,12 @@ public class AnswerCrud {
 
     }
 
-    public List<Answer> selectById(int id) throws SQLException {
+    public List<Answer> selectByQuestionId(int id) throws SQLException {
         ResultSet resultSet;
 
         List<Answer> answers = new ArrayList<>();
         try (Connection c = conn.connect()) {
-            String selectSQL = "SELECT * FROM answer WHERE answerid= ? ";
+            String selectSQL = "SELECT * FROM answer WHERE question= ? ";
             try (PreparedStatement select = c.prepareStatement(selectSQL)) {
                 select.setInt(1, id);
                 resultSet = select.executeQuery();
@@ -116,7 +125,7 @@ public class AnswerCrud {
                     answer.content = resultSet.getString("content");
                     answer.user = resultSet.getInt("user");
                     answer.isrevailed = resultSet.getBoolean("isrevailed");
-                    
+
                     answers.add(answer);
                 }
                 System.out.println("Selection is done successfully");
@@ -127,7 +136,6 @@ public class AnswerCrud {
             }
         }
 
-    }    
-    
-    
+    }
+
 }

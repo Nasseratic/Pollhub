@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author y
@@ -16,5 +18,7 @@ public class Question {
     public String type;
     public int poll;
     public String answer;
+    public ArrayList<Answer> answers;
+    
     
 }

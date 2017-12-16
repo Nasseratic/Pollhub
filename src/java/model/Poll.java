@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author y
@@ -17,5 +19,6 @@ public class Poll {
     public boolean aissuspended;
     public boolean uissuspended;
     public boolean close;
+    public ArrayList<Question> questions ;
     
 }

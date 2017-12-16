@@ -1,3 +1,5 @@
+package controllers;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,10 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author LENOVO
+ * @author y
  */
-@WebServlet(urlPatterns = {"/test"})
-public class test extends HttpServlet {
+@WebServlet(urlPatterns = {"/Profile"})
+public class Profile extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,8 +32,19 @@ public class test extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      String op = request.getParameter("op");
-      System.out.print(op);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Profile</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Profile at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

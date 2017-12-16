@@ -19,35 +19,41 @@ import model.connection;
  * @author y
  */
 public class QuestionCrud {
-    
+
     connection conn = new connection();
 
-    public void add(String content, String type, int poll, String answer) throws SQLException {
-
+    public void addQuestions(ArrayList<Question> questions) throws SQLException {
         try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO user (content, type, poll, answer)VALUES( ?, ?, ?, ?)")) {
-            add.setString(1, content);
-            add.setString(2, type);
-            add.setInt(3, poll);
-            add.setString(4, answer);
-            
-            add.executeUpdate();
-            add.close();
-            c.close();
+            for (int i = 0; i < questions.size(); i++) {
+
+                add.setString(1, questions.get(i).content);
+                add.setString(2, questions.get(i).type);
+                add.setInt(3, questions.get(i).poll);
+                add.setString(4, questions.get(i).answer);
+
+                add.executeUpdate();
+
+            }
         }
 
-        System.out.println("+++++++++++++++++++++++++++++++Insert is done successfully");
+        System.out.println("Insert is done successfully");
 
     }
 
-    public void update(int id, String content, String type, int poll, String answer) throws SQLException {
+    public void updateQuestions(ArrayList<Question> questions) throws SQLException {
         try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE user SET content = ?, type = ?, poll = ?, answer = ? WHERE questionid = ?")) {
-            update.setString(1, content);
-            update.setString(2, type);
-            update.setInt(3, poll);
-            update.setString(4, answer);
-            update.setInt(6, id);
-            
-            update.executeUpdate();
+
+            for (int i = 0; i < questions.size(); i++) {
+                update.setString(1, questions.get(i).content);
+                update.setString(2, questions.get(i).type);
+                update.setInt(3, questions.get(i).poll);
+                update.setString(4, questions.get(i).answer);
+                update.setInt(5, questions.get(i).questionid);
+
+                update.executeUpdate();
+
+            }
+
             update.close();
             c.close();
         }
@@ -56,12 +62,16 @@ public class QuestionCrud {
 
     }
 
-    public void delete(int id) throws SQLException {
+    public void delete(ArrayList<Integer> questionsIds) throws SQLException {
         try (Connection c = conn.connect()) {
             String deleteSQL = "DELETE FROM question WHERE questionid = ?";
             try (PreparedStatement delete = c.prepareStatement(deleteSQL)) {
-                delete.setInt(1, id);
-                delete.executeUpdate();
+                for (int i = 0; i < questionsIds.size(); i++) {
+
+                    delete.setInt(1, questionsIds.get(i));
+                    delete.executeUpdate();
+                }
+
                 System.out.println("delete is done successfully");
                 delete.close();
             }
@@ -84,7 +94,7 @@ public class QuestionCrud {
                     question.content = resultSet.getString("content");
                     question.type = resultSet.getString("type");
                     question.poll = resultSet.getInt("poll");
-                    
+
                     questions.add(question);
                 }
                 System.out.println("Selection is done successfully");
@@ -98,12 +108,12 @@ public class QuestionCrud {
 
     }
 
-    public List<Question> selectById(int id) throws SQLException {
+    public List<Question> selectByPollId(int id) throws SQLException {
         ResultSet resultSet;
 
         List<Question> questions = new ArrayList<>();
         try (Connection c = conn.connect()) {
-            String selectSQL = "SELECT * FROM question WHERE questionid= ? ";
+            String selectSQL = "SELECT * FROM question WHERE poll= ? ";
             try (PreparedStatement select = c.prepareStatement(selectSQL)) {
                 select.setInt(1, id);
                 resultSet = select.executeQuery();
@@ -113,7 +123,7 @@ public class QuestionCrud {
                     question.content = resultSet.getString("content");
                     question.type = resultSet.getString("type");
                     question.poll = resultSet.getInt("poll");
-                    
+
                     questions.add(question);
                 }
                 System.out.println("Selection is done successfully");
@@ -125,5 +135,5 @@ public class QuestionCrud {
         }
 
     }
-    
+
 }
