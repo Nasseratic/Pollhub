@@ -7,23 +7,68 @@
 <%@include file="/header.jsp" %>
 
 <div id="newPoll"  class="container">
+    <br/>
+    <h2 class="is-size-3"> New Poll </h2>
+    <form class="card">
+        <div class="card-header" style="padding: 10px;">
+            <div class="field is-grouped navbar-end">
+                <p class="control">
+                    <a class="button" @click="addQuestion('mcq')">
+                        <span class="icon"> <i class="ion-checkmark-circled"></i> </span> 
+                        <span> Add MCQ </span>
+                    </a>
+                </p>
+                <p class="control">
+                    <a class="button" @click="addQuestion('checkbox')">
+                        <span class="icon">
+                            <i class="ion-android-checkbox-outline"></i> 
+                        </span> 
+                        <span> Add Checkbox </span>
+                    </a>
+                </p>
+                <p class="control">
+                    <a class="button" @click="addQuestion('text')">
+                        <span class="icon"> <i class="ion-document-text"></i> </span>
+                        <span> Add Text </span> 
+                    </a>
+                </p>
+            </div>   
+        </div>
 
-    <form>
-        <div class="card" v-for="q of qs" v-bind:key="q.key">
-            <div class="field" >
-                <div class="control">
-                    <input class="input" v-model="q.name"  name={{}} type="text" placeholder="text">
+        <div class="card-content">
+            <div class="card" style="padding: 10px" v-for="( q , index) of questions" v-bind:key="q.key">
+                <div class="field" >
+                    <div class="control">
+                        <input class="input" v-model="q.text"  name={{}} type="text" placeholder="Question text">
+                    </div>
+                    <div style="padding: 10px" v-if="q.type !== 'text'"> 
+                        <h4 class=" columns is-size-5">Answers: </h4>
+                        <div class="control columns">
+                            <input class="input column is-6 is-small" v-model="q.answerToAdd"  name={{}} type="text" placeholder="Add Answer">
+                            <a @click="addAnswer( index , q.answerToAdd )"> <span class="icon is-medium" style="margin-top: -3px; padding: 2px;"> <i class="ion-plus-circled is-size-4"></i> </span> </a>
+                        </div>
+                        <div class="columns">
+                            
+                            <span style="margin: 2px;" v-for="( answer , i ) of q.answers" class="tag is-medium">
+                                <span style="margin: 5px;"> {{answer}} </span>   
+                                <button class="delete is-small"></button> 
+                            </span>
+
+                        </div>
+                    </div>
                 </div>
+                <br/>
             </div>
         </div>
+
     </form>
 
 </div>
 
 
 <script>
-    
-        
+
+
     new Vue({
         el: "#newPoll",
         data() {
@@ -31,20 +76,33 @@
                 questions: []
             };
         },
-        methods:{
-            addQuestion(){
-                this.questions.push(0); 
+        methods: {
+            addQuestion(type) {
+                questionObj = {type: type };
+
+                if (type === 'text') {
+                    questionObj['answers'] = "";
+                } else {
+                    questionObj['answers'] = [];
+                }
+                this.questions.push(questionObj);
             },
-            removeQuestion($index){
+            removeQuestion($index) {
                 this.questions.remove($index);
             },
-            addAnswer($index){
-                this.questions[$index]++;
+            addAnswer($index , $answer) {
+                if($answer !== '' || $answer !== undefined){
+                    this.questions[$index].answers.push($answer);
+                    this.questions[$index].answerToAdd = "";
+                }
+                
             },
-            removeAnswer($index){
-                this.questions[$index]--;
+            removeAnswer($index) {
+                this.questions[$index].remove($index);
+            }, check(type) {
+                console.log(type);
             }
-            
+
         }
     });
 
