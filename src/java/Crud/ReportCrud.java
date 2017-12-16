@@ -32,11 +32,11 @@ public class ReportCrud {
             c.close();
             System.out.println("555555555555555555555555555555555555Insert is done successfully");
         }
-        System.out.println("++++++++++++++++++++++++++++++++++Insert is done successfully");
+        System.out.println("Insert is done successfully");
     }
 
-    public void update(int id, String content, boolean ischecked) throws SQLException {
-        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE report SET content = ?,  ischecked=? WHERE  massageid= ?")) {
+    public void update(int id, String content, boolean ischecked ) throws SQLException {
+        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE report SET content = ?,  ischecked=? WHERE  reportid= ?")) {
             update.setString(1, content);
             update.setBoolean(2, ischecked);
             update.setInt(3, id);
@@ -69,8 +69,7 @@ public class ReportCrud {
                 resultSet = select.executeQuery();
                 while (resultSet.next()) {
                     Report report = new Report();
-                    report.reportid = resultSet.getInt("reportid");
-                    report.content = resultSet.getString("content");
+                    report.content = resultSet.getString("content");                   
                     report.ischecked = resultSet.getBoolean("ischecked");
                     reports.add(report);
                 }
@@ -84,22 +83,24 @@ public class ReportCrud {
 
     public List<Report> selectById(int id) throws SQLException {
         ResultSet resultSet;
-        List<Report> messages = new ArrayList<>();
+        List<Report> reports = new ArrayList<>();
         try (Connection c = conn.connect()) {
             String selectSQL = "SELECT * FROM Massage WHERE massegeid= ? ";
             try (PreparedStatement select = c.prepareStatement(selectSQL)) {
                 select.setInt(1, id);
                 resultSet = select.executeQuery();
                 while (resultSet.next()) {
-                    Report message = new Report();
-                    message.content = resultSet.getString("content");
-                    message.ischecked = resultSet.getBoolean("ischecked");
-                    messages.add(message);
+                   Report report = new Report();
+                    report.content = resultSet.getString("content");                   
+                    report.ischecked = resultSet.getBoolean("ischecked");
+                    reports.add(report);
                 }
                 System.out.println("Selection is done successfully");
                 select.close();
                 c.close();
-                return messages;
+
+                return  reports;
+
             }
         }
     }
