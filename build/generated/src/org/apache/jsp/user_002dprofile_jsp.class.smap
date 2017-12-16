@@ -1,0 +1,20 @@
+SMAP
+user_002dprofile_jsp.java
+JSP
+*S JSP
+*F
++ 0 user-profile.jsp
+user-profile.jsp
++ 1 header.jsp
+header.jsp
++ 2 footer.jsp
+footer.jsp
+*L
+5,3:50
+5#1,88:52
+93:140,5
+94,3:145
+7#0,34:148
+5#2,12:181
+40#0,4:192
+*E

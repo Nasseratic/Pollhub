@@ -90,7 +90,7 @@
             new Vue({
                 el:"nav",
                 data(){
-                    return { isAuth: <%= "true" %> , username: <%= "\'Mohamed\'" %> };
+                    return { isAuth: <%= "false" %> , username: <%= "\'Mohamed\'" %> };
                 }
             });
         </script>

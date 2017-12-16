@@ -21,23 +21,20 @@ import model.connection;
  * @author y
  */
 public class ReportCrud {
+
     connection conn = new connection();
 
-    public void add( String content,int poll, boolean ischecked) throws SQLException {
-
+    public void add(String content, int poll, boolean ischecked) throws SQLException {
         try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO report (content ,poll,ischecked)VALUES(?,?,?)")) {
             add.setString(1, content);
             add.setInt(2, poll);
             add.setBoolean(3, ischecked);
-
             add.executeUpdate();
             add.close();
             c.close();
             System.out.println("Insert is done successfully");
         }
-
         System.out.println("Insert is done successfully");
-
     }
 
     public void update(int id, String content, boolean ischecked ) throws SQLException {
@@ -49,9 +46,7 @@ public class ReportCrud {
             update.close();
             c.close();
         }
-
         System.out.println("update is done successfully");
-
     }
 
     public void delete(int id) throws SQLException {
@@ -63,10 +58,8 @@ public class ReportCrud {
                 System.out.println("delete is done successfully");
                 delete.close();
             }
-
             c.close();
         }
-
     }
 
     public List<Report> selectall() throws SQLException {
@@ -85,18 +78,14 @@ public class ReportCrud {
                 System.out.println("Selection is done successfully");
                 select.close();
                 c.close();
-
                 return reports;
-
             }
         }
-
     }
 
     public List<Report> selectByPollId(int id) throws SQLException {
         
         ResultSet resultSet;
-
         List<Report> reports = new ArrayList<>();
         try (Connection c = conn.connect()) {
             String selectSQL = "SELECT * FROM report WHERE poll = ? ";
@@ -112,11 +101,11 @@ public class ReportCrud {
                 System.out.println("Selection is done successfully");
                 select.close();
                 c.close();
+
                 return  reports;
 
             }
         }
-
     }
     
     
