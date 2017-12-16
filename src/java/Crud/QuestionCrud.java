@@ -42,7 +42,7 @@ public class QuestionCrud {
 
     public void updateQuestions(ArrayList<Question> questions) throws SQLException {
         try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE user SET content = ?, type = ?, poll = ?, answer = ? WHERE questionid = ?")) {
-            
+
             for (int i = 0; i < questions.size(); i++) {
                 update.setString(1, questions.get(i).content);
                 update.setString(2, questions.get(i).type);
@@ -50,10 +50,10 @@ public class QuestionCrud {
                 update.setString(4, questions.get(i).answer);
                 update.setInt(5, questions.get(i).questionid);
 
-            update.executeUpdate();
-                
+                update.executeUpdate();
+
             }
-            
+
             update.close();
             c.close();
         }
@@ -67,11 +67,11 @@ public class QuestionCrud {
             String deleteSQL = "DELETE FROM question WHERE questionid = ?";
             try (PreparedStatement delete = c.prepareStatement(deleteSQL)) {
                 for (int i = 0; i < questionsIds.size(); i++) {
-                    
+
                     delete.setInt(1, questionsIds.get(i));
                     delete.executeUpdate();
                 }
-                
+
                 System.out.println("delete is done successfully");
                 delete.close();
             }

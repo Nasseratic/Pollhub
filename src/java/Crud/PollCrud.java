@@ -40,7 +40,7 @@ public class PollCrud {
 
         }
 
-        System.out.println("+++++++++++++++++++++++++++++++Insert is done successfully");
+        System.out.println("Insert is done successfully");
 
     }
 
@@ -50,8 +50,8 @@ public class PollCrud {
             update.setInt(2, user);
             update.setBoolean(3, aissuspended);
             update.setBoolean(4, uissuspended);
-            update.setBoolean(6, close);
-            update.setInt(7, pollid);
+            update.setBoolean(5, close);
+            update.setInt(6, pollid);
 
             update.executeUpdate();
             update.close();

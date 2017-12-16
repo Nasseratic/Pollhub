@@ -1,11 +1,17 @@
+package controllers;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+import crud.ReportCrud;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,10 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author LENOVO
+ * @author y
  */
-@WebServlet(urlPatterns = {"/test"})
-public class test extends HttpServlet {
+@WebServlet(urlPatterns = {"/ReportController"})
+public class ReportController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,9 +36,59 @@ public class test extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      String op = request.getParameter("op");
-      System.out.print(op);
-    }
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            
+            String op = request.getParameter("op");
+            ReportCrud report = new ReportCrud();
+            
+            if(op == "add"){
+                
+                String content = request.getParameter("content");
+                int poll = Integer.parseInt(request.getParameter("poll"));
+                boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
+                
+                report.add(content, poll, isChecked);
+                        
+                
+            }
+            else if(op == "delete"){
+                
+                int reportid = Integer.parseInt(request.getParameter("reportid"));
+                
+                report.delete(reportid);
+                
+            }
+            else if(op == "update"){
+                
+                int reportid = Integer.parseInt(request.getParameter("reportid"));
+                String content = request.getParameter("content");
+                int poll = Integer.parseInt(request.getParameter("poll"));
+                boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
+                
+                report.update(reportid, content, isChecked);
+                
+            }
+            else if(op == "selectAll"){
+                
+                report.selectall();
+                
+            }
+            else if(op == "selectById"){
+                
+                int reportid = Integer.parseInt(request.getParameter("reportid"));
+                
+                report.selectById(reportid);
+                
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReportController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
