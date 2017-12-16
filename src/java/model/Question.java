@@ -18,7 +18,7 @@ public class Question {
     public String type;
     public int poll;
     public String answer;
-    public ArrayList<Answer> answers;
+    public ArrayList<Answer> answers = new ArrayList<>();
     
     
 }

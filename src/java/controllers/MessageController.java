@@ -7,6 +7,7 @@ package controllers;
  */
 
 import Crud.MessageCrud;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -17,6 +18,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Message;
+import model.Report;
 
 /**
  *
@@ -40,48 +44,63 @@ public class MessageController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             
+            HttpSession session = request.getSession();
             String op = request.getParameter("op");
-            MessageCrud msg = new MessageCrud();
+            MessageCrud messagecrud = new MessageCrud();
             
-            if(op == "add"){
-                
-                String content = request.getParameter("content");
-                boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
-                
-                msg.add(content, isChecked);
-                
-            }
-            else if(op == "delete"){
-                
-                int messageid = Integer.parseInt(request.getParameter("messageid"));
-                
-                msg.delete(messageid);
-                
-            }
-            else if(op == "update"){
-                
-                int messageid = Integer.parseInt(request.getParameter("messageid"));
-                String content = request.getParameter("content");
-                boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
-                
-                msg.update(messageid, content, isChecked);
-                
-            }
-            else if(op == "selectAll"){
-                
-                msg.selectall();
-                
-                
-            }
-            else if(op == "selectById"){
-                
-                int messageid = Integer.parseInt(request.getParameter("messageid"));
-                
-                msg.selectById(messageid);
-                
-            }
+            Gson gson = new Gson();
+            
+            Message message = gson.fromJson(request.getParameter("message"), Message.class);
+            
+            switch(op){
+                case("add"):                    
 
-        
+                    messagecrud.add(message.content, message.ischecked);
+                    request.setAttribute("add", "done");
+                    break;
+
+                case("delete"):
+                    
+                    messagecrud.delete(message.massageid);
+                    request.setAttribute("delete", "done");
+                    break;
+
+                case("update"):
+
+                    messagecrud.update(message.massageid, message.content, message.ischecked);
+                    request.setAttribute("update", "done");
+                    break;
+
+                case("selectAll"):
+
+                    String allMessages = gson.toJson(messagecrud.selectall());
+                    request.setAttribute("allMessages", allMessages);
+                    break;
+
+                case("selectById"):                    
+
+                    String Message = gson.toJson(messagecrud.selectById(message.massageid));
+                    request.setAttribute("Message", Message);
+                    break;
+                
+                
+                case("getCheckedMessages"):    
+                    
+                    String checkedMessages = gson.toJson(messagecrud.getCheckedMessages());
+                    request.setAttribute("checkedMessages", checkedMessages);
+                    break;
+                    
+                
+                case("numOfMessages"):
+                    
+                    int numOfMessages = messagecrud.getNumOfMessages();
+                    request.setAttribute("numOfMessages", numOfMessages);
+                    break;
+                    
+                default:                    
+                    break;
+
+            }
     }   catch (SQLException ex) {
             Logger.getLogger(MessageController.class.getName()).log(Level.SEVERE, null, ex);
         }
