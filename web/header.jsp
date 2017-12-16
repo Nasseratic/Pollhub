@@ -18,7 +18,7 @@
     <body>
 
         <header>
-            <nav class="navbar is-fixed-top" style="opacity: 0;" v-bind:style="{ opacity: 1 }">
+            <nav class="navbar is-fixed-top card" style="opacity: 0;" v-bind:style="{ opacity: 1 }">
                 <div class="navbar-brand">
                     <a class="navbar-item" href="https://bulma.io">
                         <h3> LOGO </h3>
