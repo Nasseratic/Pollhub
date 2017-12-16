@@ -6,7 +6,8 @@ package controllers;
  * and open the template in the editor.
  */
 
-import crud.ReportCrud;
+import com.google.gson.Gson;
+import Crud.ReportCrud;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -17,6 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Report;
 
 /**
  *
@@ -40,54 +43,63 @@ public class ReportController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             
+            HttpSession session = request.getSession();
             String op = request.getParameter("op");
-            ReportCrud report = new ReportCrud();
+            ReportCrud reportcrud = new ReportCrud();
             
-            if(op == "add"){
+            Gson gson = new Gson();
+            
+            Report report = gson.fromJson(request.getParameter("report"), Report.class);
+            
+            switch(op){
                 
-                String content = request.getParameter("content");
-                int poll = Integer.parseInt(request.getParameter("poll"));
-                boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
+                case("add"):
+
+                    reportcrud.add(report.content, report.poll, report.ischecked);
+                    request.setAttribute("add", "done");
+                    break;
+
+                case("delete"):                    
+
+                    reportcrud.delete(report.reportid);
+                    request.setAttribute("add", "done");
+                    break;
+
+                case("update"):
+                    
+                    reportcrud.update(report.reportid, report.content, report.ischecked);
+                    request.setAttribute("add", "done");    
+                    break;
+                    
+                case("selectAll"):
+
+                    String Reports = gson.toJson(reportcrud.selectall());                                        
+                    request.setAttribute("allReports", Reports);
+                    break;
+
+
+                case("selectByPollId"):
+                    
+                    String Report = gson.toJson(reportcrud.selectByPollId(report.poll));             
+                    request.setAttribute("report", Report);
+                    break;
                 
-                report.add(content, poll, isChecked);
-                        
-                
-            }
-            else if(op == "delete"){
-                
-                int reportid = Integer.parseInt(request.getParameter("reportid"));
-                
-                report.delete(reportid);
-                
-            }
-            else if(op == "update"){
-                
-                int reportid = Integer.parseInt(request.getParameter("reportid"));
-                String content = request.getParameter("content");
-                int poll = Integer.parseInt(request.getParameter("poll"));
-                boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
-                
-                report.update(reportid, content, isChecked);
-                
-            }
-            else if(op == "selectAll"){
-                
-                report.selectall();
-                
-            }
-            else if(op == "selectById"){
-                
-                int reportid = Integer.parseInt(request.getParameter("reportid"));
-                
-                report.selectById(reportid);
-                
+                case("numOfReports"):
+                    
+                    int numOfReports = reportcrud.getNumOfReports();
+                    request.setAttribute("numOfReports", numOfReports);
+                    
+                    
+                default:
+                    break;
+                                        
             }
             
-        } catch (SQLException ex) {
+        }catch (SQLException ex) {
             Logger.getLogger(ReportController.class.getName()).log(Level.SEVERE, null, ex);
         }
             
-        }
+    }
     
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
