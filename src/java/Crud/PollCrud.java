@@ -108,6 +108,38 @@ public class PollCrud {
         }
 
     }
+    
+    public Poll selectPollWithEverything(int id) throws SQLException {
+        ResultSet resultSet;
+        Poll poll = new Poll();
+        try (Connection c = conn.connect()) {
+            String selectSQL = "select * from poll where pollid = ?";
+            
+            try (PreparedStatement select = c.prepareStatement(selectSQL)) {
+                select.setInt(1, id);
+                resultSet = select.executeQuery();
+                while (resultSet.next()) {
+                    poll.title = resultSet.getString("title");
+                    poll.pollid = resultSet.getInt("pollid");
+                    poll.user = resultSet.getInt("user");
+                    poll.aissuspended = resultSet.getBoolean("aissuspended");
+                    poll.uissuspended = resultSet.getBoolean("uissuspended");
+                    poll.close = resultSet.getBoolean("close");
+
+                    
+                }
+                QuestionCrud questionCrud = new QuestionCrud();
+                poll.questions = (ArrayList<Question>) questionCrud.selectByPollId(id);
+                System.out.println("Selection is done successfully");
+                select.close();
+                c.close();
+
+                return poll;
+
+            }
+        }
+
+    }
 
     public List<Poll> selectByUserId(int id) throws SQLException {
         ResultSet resultSet;

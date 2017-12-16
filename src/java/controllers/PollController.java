@@ -5,14 +5,12 @@ package controllers;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import Crud.AnswerCrud;
 import Crud.PollCrud;
 import java.io.IOException;
 import java.io.PrintWriter;
 import com.google.gson.Gson;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,6 +47,7 @@ public class PollController extends HttpServlet {
 
             String op = request.getParameter("op");
             HttpSession session = request.getSession();
+            String polls = "";
             int userId = (int) session.getAttribute("session_userid");
             if (userId < 0) {
                 response.sendRedirect("user-login.jsp");
@@ -62,66 +61,113 @@ public class PollController extends HttpServlet {
                     case "add":
                         Poll poll = json.fromJson(request.getParameter("polls"), Poll.class);
 
-                        pollCrud.add(poll.title, userId, poll.aissuspended, poll.uissuspended, poll.close, poll.questions);
-                        ///response.sendRedirect("user-login.jsp"); need to know where
-                        
-                        break;
-                    case "getAllForUser":
+                         {
+                            try {
+                                pollCrud.add(poll.title, userId, poll.aissuspended, poll.uissuspended, poll.close, poll.questions);
+                                ///response.sendRedirect("user-login.jsp"); need to know where
+                            } catch (SQLException ex) {
+                                Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                                //response.sendRedirect("user-login.jsp"); need to know where
+                            }
+                        }
 
-                        String polls;
-                        polls = json.toJson(pollCrud.selectByUserId(userId));
-                        request.setAttribute("polls", polls);
-                        //response.sendRedirect("user-login.jsp"); need to know where
+                        break;
 
-                        break;
-                    case "getAllForSystem":
-                        polls = json.toJson(pollCrud.selectall());
-                        request.setAttribute("polls", polls);
-                        //response.sendRedirect("user-login.jsp"); need to know where
-                        break;
+                    case "getAllForSystem": {
+                        try {
+                            polls = json.toJson(pollCrud.selectall());
+                            request.setAttribute("polls", polls);
+                            //request.getRequestDispatcher("/PollController").forward(request, response);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        }
+                    }
+                    request.setAttribute("polls", polls);
+                    //response.sendRedirect("user-login.jsp"); need to know where
+                    break;
                     case "answerPoll":
-                        Question question = new Gson().fromJson(request.getParameter("questions"), Question.class);
+                        Question question = json.fromJson(request.getParameter("questions"), Question.class);
                         AnswerCrud answerCrud = new AnswerCrud();
-                        answerCrud.addAnswers(question.answers);
-                        //response.sendRedirect("user-login.jsp"); need to know where
+                         {
+                            try {
+                                answerCrud.addAnswers(question.answers);
+                                //response.sendRedirect("user-login.jsp"); need to know where
+                            } catch (SQLException ex) {
+                                Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                                //response.sendRedirect("user-login.jsp"); need to know where
+                            }
+                        }
 
                         break;
-                    case "delAll":
-                        break;
-                    case "getAllWithEverything":
-                        List<Poll> pollss = pollCrud.selectall();
-                        //Need to know about that
+                    case "getPollWithEverything": {
+                        try {
+                            poll = pollCrud.selectPollWithEverything(pollId);
+                            polls = json.toJson(poll);
+                            request.setAttribute("poll", polls);
+                            //request.getRequestDispatcher("/ConfirmationServlet").forward(request, response);
+                            //Need to know about that
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        }
+                    }
 
-                        break;
-                    case "suspend":
-                        
-                        pollCrud.suspend(Boolean.getBoolean(session.getAttribute("session_IsAdmin").toString()), pollId);
-                        request.setAttribute("suspended","done");
-                        //response.sendRedirect("user-login.jsp"); need to know where
-                        break;
-                    case "unsuspend":
-                     
-                        pollCrud.suspend(Boolean.getBoolean(session.getAttribute("session_IsAdmin").toString()), pollId);
-                        request.setAttribute("suspended","done");
-                        //response.sendRedirect("user-login.jsp"); need to know where
-                        break;
-                    case "close":
-                        pollCrud.close(pollId);
-                        request.setAttribute("close","done");
-                        //response.sendRedirect("user-login.jsp"); need to know where
-                        break;
-                    case "open":
-                        pollCrud.open(pollId);
-                        request.setAttribute("open","done");
-                        //response.sendRedirect("user-login.jsp"); need to know where
-                        break;
+                    break;
+                    case "suspend": {
+                        try {
+                            pollCrud.suspend((boolean) session.getAttribute("session_IsAdmin"), pollId);
+                            request.setAttribute("suspended", "done");
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        }
+                    }
+
+                    break;
+                    case "unsuspend": {
+                        try {
+                            pollCrud.unSuspend((boolean) session.getAttribute("session_IsAdmin"), pollId);
+                            request.setAttribute("suspended", "done");
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        }
+                    }
+
+                    break;
+                    case "close": {
+                        try {
+                            pollCrud.close(pollId);
+                            request.setAttribute("close", "done");
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        }
+                    }
+
+                    break;
+                    case "open": {
+                        try {
+                            pollCrud.open(pollId);
+                            request.setAttribute("open", "done");
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        }
+                    }
+
+                    break;
                     default:
+                        response.sendRedirect("user-login.jsp");
                         break;
                 }
             }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
