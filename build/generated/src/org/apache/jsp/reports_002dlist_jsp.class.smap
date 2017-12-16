@@ -1,0 +1,23 @@
+SMAP
+reports_002dlist_jsp.java
+JSP
+*S JSP
+*F
++ 0 reports-list.jsp
+reports-list.jsp
++ 1 header.jsp
+header.jsp
++ 2 footer.jsp
+footer.jsp
+*L
+5,6:53
+5#1,88:58
+93:146,5
+94,3:151
+10#0,6:154
+15,12:160
+27,11:173
+37,44:184
+5#2,12:227
+80#0,2:238
+*E
