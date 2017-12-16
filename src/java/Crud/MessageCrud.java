@@ -33,11 +33,11 @@ public class MessageCrud {
           add.executeUpdate();
             add.close();
             c.close();
-             System.out.println("++++++++++++++++++++++++++++++++++Insert is done successfully");
+             System.out.println("Insert is done successfully");
           
         } catch (SQLException ex) {
              Logger.getLogger(MessageCrud.class.getName()).log(Level.SEVERE, null, ex);
-               System.out.println("555555555555555555555555555555555555Insert is done successfully");
+               System.out.println("Insert is done successfully");
                
          }
 
@@ -99,20 +99,46 @@ public class MessageCrud {
 
     }
 
-    public List<Message> selectById(int id) throws SQLException {
+    public Message selectById(int id) throws SQLException {                        
+        
         ResultSet resultSet;
-
-        List<Message> messages = new ArrayList<>();
+        Message message = null;
+        
         try (Connection c = conn.connect()) {
             String selectSQL = "SELECT * FROM Massage WHERE massegeid= ? ";
             try (PreparedStatement select = c.prepareStatement(selectSQL)) {
                 select.setInt(1, id);
                 resultSet = select.executeQuery();
-                while (resultSet.next()) {
-                   Message message = new Message();
-                    message.content = resultSet.getString("content");
-                   
+                if (resultSet.next()) {
+                    message = new Message();
+                    message.content = resultSet.getString("content");                   
                     message.ischecked = resultSet.getBoolean("ischecked");
+                    
+                }
+                System.out.println("Selection is done successfully");
+                select.close();
+                c.close();
+                return  message;
+
+            }
+        }
+
+    }
+    
+    
+    public List<Message> getCheckedMessages() throws SQLException{
+        
+        ResultSet resultSet;
+        List<Message> messages = new ArrayList<>();
+        
+        try (Connection c = conn.connect()) {
+            String selectSQL = "SELECT * FROM Massage WHERE ischecked = true";
+            try (PreparedStatement select = c.prepareStatement(selectSQL)) {                
+                resultSet = select.executeQuery();
+                while (resultSet.next()) {
+                    Message message = new Message();                    
+                    message.content = resultSet.getString("content");                   
+                    
                     messages.add(message);
                 }
                 System.out.println("Selection is done successfully");
@@ -122,6 +148,30 @@ public class MessageCrud {
 
             }
         }
-
+        
     }
+    
+    
+    public int getNumOfMessages(){
+                
+        List<Message> messages = null;
+        
+        try {
+            messages = new MessageCrud().selectall();
+        }
+        catch (SQLException ex) {
+            System.out.println("can't select the messages from the database !! \n");
+            Logger.getLogger(ReportCrud.class.getName()).log(Level.SEVERE, null, ex);
+        }
+               
+        int numOfMessages = 0;
+        
+        if(messages != null){
+            numOfMessages = messages.size();
+        }        
+        
+        return numOfMessages;
+    }
+    
+    
 }

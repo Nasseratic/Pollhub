@@ -13,6 +13,7 @@ public class Report {
     
     public int reportid;
     public String content;
+    public int poll;
     public boolean  ischecked;
     
 }

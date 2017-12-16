@@ -11,7 +11,10 @@ import Crud.PollCrud;
 import java.io.IOException;
 import java.io.PrintWriter;
 import com.google.gson.Gson;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,7 +56,7 @@ public class PollController extends HttpServlet {
 
                 //Add poll
                 PollCrud pollCrud = new PollCrud();
-                int pollId = request.getParameter("pollId");
+                int pollId = Integer.parseInt(request.getParameter("pollId"));
                 Gson json = new Gson();
                 switch (op) {
                     case "add":
@@ -61,7 +64,7 @@ public class PollController extends HttpServlet {
 
                         pollCrud.add(poll.title, userId, poll.aissuspended, poll.uissuspended, poll.close, poll.questions);
                         ///response.sendRedirect("user-login.jsp"); need to know where
-
+                        
                         break;
                     case "getAllForUser":
 
@@ -92,13 +95,13 @@ public class PollController extends HttpServlet {
                         break;
                     case "suspend":
                         
-                        pollCrud.suspend(session.getAttribute("session_IsAdmin"), pollId);
+                        pollCrud.suspend(Boolean.getBoolean(session.getAttribute("session_IsAdmin").toString()), pollId);
                         request.setAttribute("suspended","done");
                         //response.sendRedirect("user-login.jsp"); need to know where
                         break;
                     case "unsuspend":
                      
-                        pollCrud.suspend(session.getAttribute("session_IsAdmin"), pollId);
+                        pollCrud.suspend(Boolean.getBoolean(session.getAttribute("session_IsAdmin").toString()), pollId);
                         request.setAttribute("suspended","done");
                         //response.sendRedirect("user-login.jsp"); need to know where
                         break;
@@ -117,6 +120,8 @@ public class PollController extends HttpServlet {
                 }
             }
 
+        } catch (SQLException ex) {
+            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
