@@ -27,14 +27,11 @@ public class UserCrud {
             add.setString(3, email);
             add.setBoolean(4, isAdmin);
             add.setBoolean(5, issusbended);
-
             add.executeUpdate();
             add.close();
             c.close();
         }
-
         System.out.println("+++++++++++++++++++++++++++++++Insert is done successfully");
-
     }
 
     public void update(int id, String username, String password, String email, boolean isAdmin, boolean issusbended) throws SQLException {
@@ -49,9 +46,7 @@ public class UserCrud {
             update.close();
             c.close();
         }
-
         System.out.println("update is done successfully");
-
     }
 
     public void delete(String username) throws SQLException {
@@ -63,7 +58,6 @@ public class UserCrud {
                 System.out.println("delete is done successfully");
                 delete.close();
             }
-
             c.close();
         }
 

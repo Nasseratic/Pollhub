@@ -4,21 +4,30 @@
     Author     : LENOVO
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="model.Report"%>
 <%@include file="/header.jsp" %>
-
-<div id="report" class="container">
-
-</div>
-
+<%
+    Report report = (Report)request.getAttribute("report");
+%>
+<section id="report" class="section">
+    <div class="container">
+        <h1 class="title">Section</h1>
+        <h2 class="subtitle">
+            <%= report.content %>
+            <%= report.ischecked ? "Checked" : "Not Checked" %>
+        </h2>
+    </div>
+</section>
 
 <script>
-    
+
 //    function suspend(){
 //        axios.get('Poll').then( () =>{ 
 //        
 //        });
 //    }
-    
+
 </script>
 
 <%@include file="/footer.jsp" %> 
