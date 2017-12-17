@@ -1,3 +1,5 @@
+package controllers;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -42,61 +44,61 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
          
-            String op = "";
+            String op ;
             op = request.getParameter("op");
-                 if (op.equals("login")){
-             String username=request.getParameter("username");
-            String pass=request.getParameter("password");
-                 UserCrud user =new UserCrud();
-                 List<User> users = new ArrayList<>();
-                 users=user.selectById(username);
-                 if (users.get(0).password.equals(pass)){
-                     
-                  HttpSession session = request.getSession(true);
-            
-            session.setAttribute("session_username", username);
-            session.setAttribute("session_userid",users.get(0).userId);
-            session.setAttribute("session_IsAdmin",users.get(0).isAdmin );
-            session.setAttribute("session_valid", true);
-           
-            response.sendRedirect("user-profile.jsp");
-                 
-                 }
-                 
-                 else {
-                 request.setAttribute("error", " the user not exist");
-                 response.sendRedirect("user-login.jsp");
-                 }
-                 
-                 
-                 }
-                 
-                 else if (op.equals("signup")){
-                     
-                 String email=request.getParameter("email");
-                  String username=request.getParameter("username");
-            String pass=request.getParameter("password");
-            
-            UserCrud user =new UserCrud();
-            user.add(username, pass, email, true, true);
-                 List<User> users = new ArrayList<>();
-                 users=user.selectById(username);
-                 HttpSession session = request.getSession(true);
-            
-            session.setAttribute("session_username", username);
-            session.setAttribute("session_userid",users.get(0).userId);
-            session.setAttribute("session_IsAdmin",users.get(0).isAdmin );
-            session.setAttribute("session_valid", true);
-           
-            response.sendRedirect("user-profile.jsp");
-                 }
-                 else if(op.equals("logout")){
-                 HttpSession session = request.getSession(true);
-                 session.invalidate();
-                 response.sendRedirect("home.jsp"); // don't forget to create home ya nasser 
-
-                 
-                 }
+            switch (op) {
+                case "login":
+                    {
+                        String username=request.getParameter("username");
+                        String pass=request.getParameter("password");
+                        UserCrud user =new UserCrud();
+                        List<User> users ;
+                        users=user.selectById(username);
+                        if (users.get(0).password.equals(pass)){
+                            
+                            HttpSession session = request.getSession(true);
+                            
+                            session.setAttribute("session_username", username);
+                            session.setAttribute("session_userid",users.get(0).userId);
+                            session.setAttribute("session_IsAdmin",users.get(0).isAdmin );
+                            session.setAttribute("session_valid", true);
+                            
+                            response.sendRedirect("user-profile.jsp");
+                            
+                        }
+                        
+                        else {
+                            request.setAttribute("error", " the user not exist");
+                            response.sendRedirect("user-login.jsp");
+                        }      break;
+                    }
+                case "signup":
+                    {
+                        String email=request.getParameter("email");
+                        String username=request.getParameter("username");
+                        String pass=request.getParameter("password");
+                        UserCrud user =new UserCrud();
+                        user.add(username, pass, email, true, true);
+                        List<User> users = new ArrayList<>();
+                        users=user.selectById(username);
+                        HttpSession session = request.getSession(true);
+                        session.setAttribute("session_username", username);
+                        session.setAttribute("session_userid",users.get(0).userId);
+                        session.setAttribute("session_IsAdmin",users.get(0).isAdmin );
+                        session.setAttribute("session_valid", true);
+                        response.sendRedirect("user-profile.jsp");
+                        break;
+                    }
+                case "logout":
+                    {
+                        HttpSession session = request.getSession(true);
+                        session.invalidate();
+                        response.sendRedirect("home.jsp"); // don't forget to create home ya nasser 
+                        break;
+                    }
+                default:
+                    break;
+            }
            
         }
     }
