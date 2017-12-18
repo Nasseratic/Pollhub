@@ -6,7 +6,6 @@ package controllers;
  * and open the template in the editor.
  */
 import crud.AnswerCrud;
-import crud.PollCrud;
 import java.io.IOException;
 import java.io.PrintWriter;
 import com.google.gson.Gson;
@@ -47,12 +46,12 @@ public class PollController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
+
             String op = request.getParameter("op");
             HttpSession session = request.getSession();
             String polls = "";
-            Poll poll = null;
-            int userId = 2;
+            Poll poll ;
+            int userId = Integer.parseInt((String) session.getAttribute("session_userid"));
             if (userId < 0) {
                 response.sendRedirect("user-login.jsp");
             } else {
@@ -65,12 +64,12 @@ public class PollController extends HttpServlet {
 
                          {
                             try {
-                                ArrayList<Question> questions = new ArrayList<>() ;
+                                ArrayList<Question> questions = new ArrayList<>();
                                 for (int i = 0; i < poll.questions.size(); i++) {
-                                   questions.add( poll.questions.get(i));
-                                    
+                                    questions.add(poll.questions.get(i));
+
                                 }
-                                System.out.println(questions.get(0).content+"looooooooooool");
+
                                 pollCrud.add(poll.title, userId, poll.aissuspended, poll.uissuspended, poll.close, questions);
                                 ///response.sendRedirect("user-login.jsp"); need to know where
                             } catch (SQLException ex) {
@@ -97,14 +96,14 @@ public class PollController extends HttpServlet {
                     //response.sendRedirect("user-login.jsp"); need to know where
                     break;
                     case "answerPoll":
-                        Question question = json.fromJson(request.getParameter("questions"), Question.class);
+                        Question question = json.fromJson(request.getParameter("json"), Question.class);
                         AnswerCrud answerCrud = new AnswerCrud();
                          {
                             try {
-                                ArrayList<Answer> answers = new ArrayList<>() ;
-                                for (int i = 0; i < poll.questions.size(); i++) {
-                                   answers.add( question.answers.get(i));
-                                    
+                                ArrayList<Answer> answers = new ArrayList<>();
+                                for (int i = 0; i < question.answers.size(); i++) {
+                                    answers.add(question.answers.get(i));
+
                                 }
                                 answerCrud.addAnswers(answers);
                                 //response.sendRedirect("user-login.jsp"); need to know where
@@ -133,7 +132,7 @@ public class PollController extends HttpServlet {
                     break;
                     case "suspend": {
                         try {
-                                            int pollId = Integer.parseInt(request.getParameter("pollId"));
+                            int pollId = Integer.parseInt(request.getParameter("pollId"));
 
                             pollCrud.suspend((boolean) session.getAttribute("session_IsAdmin"), pollId);
                             request.setAttribute("suspended", "done");
@@ -148,7 +147,7 @@ public class PollController extends HttpServlet {
                     break;
                     case "unsuspend": {
                         try {
-                                            int pollId = Integer.parseInt(request.getParameter("pollId"));
+                            int pollId = Integer.parseInt(request.getParameter("pollId"));
 
                             pollCrud.unSuspend((boolean) session.getAttribute("session_IsAdmin"), pollId);
                             request.setAttribute("suspended", "done");
@@ -163,7 +162,7 @@ public class PollController extends HttpServlet {
                     break;
                     case "close": {
                         try {
-                                            int pollId = Integer.parseInt(request.getParameter("pollId"));
+                            int pollId = Integer.parseInt(request.getParameter("pollId"));
 
                             pollCrud.close(pollId);
                             out.println("true");
@@ -177,7 +176,7 @@ public class PollController extends HttpServlet {
                     break;
                     case "open": {
                         try {
-                                            int pollId = Integer.parseInt(request.getParameter("pollId"));
+                            int pollId = Integer.parseInt(request.getParameter("pollId"));
 
                             pollCrud.open(pollId);
                             request.setAttribute("open", "done");

@@ -53,23 +53,27 @@ public class PollCrud {
     }
 
     public void update(String title, int pollid, int user, boolean aissuspended, boolean uissuspended, boolean close, ArrayList<Question> questions) throws SQLException {
-        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE user SET title = ?, user = ?, aissuspended = ?, uissuspended = ?, close = ? WHERE pollid = ?")) {
-            update.setString(1, title);
-            update.setInt(2, user);
-            update.setBoolean(3, aissuspended);
-            update.setBoolean(4, uissuspended);
-            update.setBoolean(5, close);
-            update.setInt(6, pollid);
+        try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO poll (title, user, aissuspended, uissuspended, close) VALUES (?, ?, ?, ?, ?)")) {
+            add.setString(1, title);
+            add.setInt(2, user);
+            add.setBoolean(3, aissuspended);
+            add.setBoolean(4, uissuspended);
+            add.setBoolean(5, close);
 
-            update.executeUpdate();
-            update.close();
+            add.executeUpdate();
+            add.close();
             c.close();
+            
             crud.QuestionCrud question = new crud.QuestionCrud();
-            question.updateQuestions(questions);
+            for (int i = 0; i < questions.size(); i++) {
+                questions.get(i).poll = pollid;
+
+            }
+            question.addQuestions(questions);
 
         }
 
-        System.out.println("update is done successfully");
+        System.out.println("Insert is done successfully");
 
     }
 
@@ -180,14 +184,14 @@ public class PollCrud {
 
     public void suspend(boolean isAdmin, int pollId) throws SQLException {
         if (isAdmin) {
-            try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE user SET aissuspended = ? WHERE pollid = ?")) {
+            try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE poll SET aissuspended = ? WHERE pollid = ?")) {
                 suspend.setBoolean(1, true);
                 suspend.setInt(2, pollId);
                 suspend.close();
                 c.close();
             }
         } else {
-            try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE user SET uissuspended = ? WHERE pollid = ?")) {
+            try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE poll SET uissuspended = ? WHERE pollid = ?")) {
                 suspend.setBoolean(1, true);
                 suspend.setInt(2, pollId);
                 suspend.close();
@@ -199,14 +203,14 @@ public class PollCrud {
 
     public void unSuspend(boolean isAdmin, int pollId) throws SQLException {
         if (isAdmin) {
-            try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE user SET aissuspended = ? WHERE pollid = ?")) {
+            try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE poll SET aissuspended = ? WHERE pollid = ?")) {
                 suspend.setBoolean(1, false);
                 suspend.setInt(2, pollId);
                 suspend.close();
                 c.close();
             }
         } else {
-            try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE user SET uissuspended = ? WHERE pollid = ?")) {
+            try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE poll SET uissuspended = ? WHERE pollid = ?")) {
                 suspend.setBoolean(1, false);
                 suspend.setInt(2, pollId);
                 suspend.close();
@@ -218,7 +222,7 @@ public class PollCrud {
 
     public void close(int pollId) throws SQLException {
 
-        try (Connection c = conn.connect(); PreparedStatement close = c.prepareStatement("UPDATE user SET close = ? WHERE pollid = ?")) {
+        try (Connection c = conn.connect(); PreparedStatement close = c.prepareStatement("UPDATE poll SET close = ? WHERE pollid = ?")) {
             close.setBoolean(1, true);
             close.setInt(2, pollId);
             close.close();
@@ -230,7 +234,7 @@ public class PollCrud {
 
     public void open(int pollId) throws SQLException {
 
-        try (Connection c = conn.connect(); PreparedStatement open = c.prepareStatement("UPDATE user SET close = ? WHERE pollid = ?")) {
+        try (Connection c = conn.connect(); PreparedStatement open = c.prepareStatement("UPDATE poll SET close = ? WHERE pollid = ?")) {
             open.setBoolean(1, false);
             open.setInt(2, pollId);
             open.close();
