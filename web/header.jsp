@@ -78,6 +78,16 @@
                                         </span>
                                     </a>
                                 </p>
+                                <p class="control">
+                                    <a class="button" href="User?op=logout">
+                                        <span class="icon">
+                                            <i class="ion-log-out"></i>
+                                        </span>
+                                        <span>
+                                            Logout
+                                        </span>
+                                    </a>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -90,7 +100,9 @@
             new Vue({
                 el:"nav",
                 data(){
-                    return { isAuth: <%= "true" %> , username: <%= "\'Mohamed\'" %> };
+                    return { isAuth: <%= session.getAttribute("session_valid") %> , username: <%= "\'"+session.getAttribute("session_username")+"\'" %> };
                 }
             });
         </script>
+        
+        <main style="min-height: 75vh">

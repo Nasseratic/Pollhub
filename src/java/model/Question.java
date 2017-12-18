@@ -6,6 +6,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -18,7 +19,8 @@ public class Question {
     public String type;
     public int poll;
     public String answer;
-    public ArrayList<Answer> answers = new ArrayList<>();
+    public LinkedList<Answer> answers;
     
     
 }
+

@@ -10,15 +10,22 @@
 <div class="card"  style="padding: 50px;">
     <h2 class="is-size-3 has-text-centered"> USER SIGN UP </h2>
     <br/>
-    <form class="container" action="UserCrud?op=signup" method="POST" style="max-width: 350px;">
+    <form class="container" action="User?op=signup" method="POST" style="max-width: 350px;">
         <div class="field">
             <div class="control">
-                <input class="input" v-model="username" @keyup="checkUserExists()" required name="username" type="text" placeholder="User Name">
+                <input class="input" v-model="username" @keyup="checkUserExists()" 
+                required name="username" type="text" placeholder="User Name" 
+                :class="{ 'is-danger': !isValid , 'is-success': isValid && username.length > 3 }" >
+                <span 
+                style="font-size: 14px;" 
+                :class="{ 'has-text-danger': !isValid , 'has-text-success': isValid && username.length > 3 }" >
+                        {{isValid ? (username.length > 3 ? 'Valid username': '') : 'This user already exist.'}}
+                </span> 
             </div>
         </div>
         <div class="field">
             <div class="control">
-                <input class="input" name="email" type="text" placeholder="Email" required>
+                <input class="input" name="email" type="email" placeholder="Email" required>
             </div>
         </div>
         <div class="field">
@@ -27,7 +34,9 @@
             </div>
         </div>
 
-        <button class="button is-primary is-medium btn-text is-centered" type="submit">SIGN UP</button>
+        <button class="button is-primary is-medium btn-text is-centered" type="submit" 
+                :disabled="!(isValid && username.length > 3)"
+                >SIGN UP</button>
     </form>
 </div>
 <script>
@@ -40,9 +49,9 @@
         methods: {
             checkUserExists() {
                 console.log(this.username);
-                axios.get('UserCrud?op=unique&username=' + this.username).then(res => {
-                    this.isValid = res;
-                    console.log(this.username);
+                axios.get( 'User?op=unique&username=' + this.username).then(res => {
+                    this.isValid = res.data;
+                    console.log(this.isValid);
                 });
             }
         }

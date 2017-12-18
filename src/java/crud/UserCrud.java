@@ -8,6 +8,8 @@ package crud;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 import model.connection;
 
@@ -18,7 +20,7 @@ import model.connection;
 public class UserCrud {
 
     connection conn = new connection();
-
+    
     public void add(String username, String password, String email, boolean isAdmin, boolean issusbended) throws SQLException {
 
         try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO user (username ,password,email,isAdmin  ,issuspended)VALUES( ?, ?, ?, ?,? )")) {
@@ -27,14 +29,11 @@ public class UserCrud {
             add.setString(3, email);
             add.setBoolean(4, isAdmin);
             add.setBoolean(5, issusbended);
-
             add.executeUpdate();
             add.close();
             c.close();
         }
-
         System.out.println("+++++++++++++++++++++++++++++++Insert is done successfully");
-
     }
 
     public void update(int id, String username, String password, String email, boolean isAdmin, boolean issusbended) throws SQLException {
@@ -49,9 +48,7 @@ public class UserCrud {
             update.close();
             c.close();
         }
-
         System.out.println("update is done successfully");
-
     }
 
     public void delete(String username) throws SQLException {
@@ -63,7 +60,6 @@ public class UserCrud {
                 System.out.println("delete is done successfully");
                 delete.close();
             }
-
             c.close();
         }
 
@@ -96,10 +92,10 @@ public class UserCrud {
 
     }
 
-    public List<User> selectById(String username) throws SQLException {
+    public ArrayList<User> selectById(String username)   {
         ResultSet resultSet;
 
-        List<User> users = new ArrayList<>();
+        ArrayList<User> users = new ArrayList<>();
         try (Connection c = conn.connect()) {
             String selectSQL = "SELECT * FROM user WHERE username= ? ";
             try (PreparedStatement select = c.prepareStatement(selectSQL)) {
@@ -119,8 +115,15 @@ public class UserCrud {
                 c.close();
                 return users;
 
+            } catch (SQLException ex) {
+                
+                Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+                 return users;
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserCrud.class.getName()).log(Level.SEVERE, null, ex);
+             return users;
         }
-
+      
     }
 }

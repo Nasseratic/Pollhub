@@ -5,7 +5,7 @@ package controllers;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import Crud.PollCrud;
+import crud.PollCrud;
 import com.google.gson.Gson;
 import crud.UserCrud;
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class Profile extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             String polls = "";
-            String user = "";
+            String user ;
             String username = (String) session.getAttribute("session_username");
             int userId = (int) session.getAttribute("session_userid");
             Gson json = new Gson();
@@ -57,14 +57,7 @@ public class Profile extends HttpServlet {
                 requestDispatcher = request.getRequestDispatcher("/user-login.jsp");
                 requestDispatcher.forward(request, response);
             }
-            try {
-                user = json.toJson(new UserCrud().selectById(username));
-            } catch (SQLException ex) {
-                Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
-                RequestDispatcher requestDispatcher;
-                requestDispatcher = request.getRequestDispatcher("/user-login.jsp");
-                requestDispatcher.forward(request, response);
-            }
+            user = json.toJson(new UserCrud().selectById(username));
             request.setAttribute("polls", polls);
             request.setAttribute("user", user);
             /*RequestDispatcher requestDispatcher;

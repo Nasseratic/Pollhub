@@ -20,7 +20,7 @@
         el: "#poll",
         data(){
             return {
-                poll : {} // TODO POLL DATA INCLODING ALL QESTIONS 
+                poll : JSON.parse( <%= request.getAttribute("json") %> ) // TODO POLL DATA INCLODING ALL QESTIONS 
             };
         }
     });

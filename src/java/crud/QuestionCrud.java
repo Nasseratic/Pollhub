@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Crud;
+package crud;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -123,6 +123,7 @@ public class QuestionCrud {
                     question.content = resultSet.getString("content");
                     question.type = resultSet.getString("type");
                     question.poll = resultSet.getInt("poll");
+                    question.answer = resultSet.getString("answer");
 
                     questions.add(question);
                 }

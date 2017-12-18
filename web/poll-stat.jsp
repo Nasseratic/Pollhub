@@ -12,7 +12,9 @@
 <script>
     
     new Vue({
-        
+        data(){
+            
+        }
     });
     
 </script>

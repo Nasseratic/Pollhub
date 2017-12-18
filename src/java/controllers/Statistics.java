@@ -5,18 +5,23 @@ package controllers;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
+import com.google.gson.Gson;
+import crud.AnswerCrud;
+import crud.PollCrud;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Question;
+import model.Poll;
 
 /**
  *
@@ -35,16 +40,36 @@ public class Statistics extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            //String p = request.getParameter("pollid");
+           // int pollid = Integer.parseInt(p);
+            System.out.println("zizomody done--------------------------------");
+            PollCrud po = new PollCrud();
+            System.out.println("zizomody done-------------------------------3333333333333333333333333-");
+            Poll poll;
+            poll = po.selectPollWithEverything(1);
+            ArrayList<ArrayList<Integer>> questions_Answers = new ArrayList<>();
+            for (int i = 0; i < poll.questions.size(); i++) {
+                String answer = poll.questions.get(i).answer;
+                String answers[];
+                answers = answer.split("/");
+                
+                ArrayList<Integer> freq = new ArrayList<>();
+                for (String answer1 : answers) {
+                    AnswerCrud ans = new AnswerCrud();
+                    freq.add(ans.selectByQuestionContent(answer1));
+                }
+                questions_Answers.add(freq);
+                freq.clear();
+
+            }
             
-            
-            
-            // number of 
-            
-            
+           String stat= new Gson().toJson(questions_Answers);
+           out.println(stat);
+                   System.out.println("controllers.Statistics.processRequest()777777777777777777777777777777777777  "+questions_Answers.size()+"    hhhhhhhhhhhhhhhhhhh" );
+
         }
     }
 
@@ -60,7 +85,11 @@ public class Statistics extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -74,7 +103,11 @@ public class Statistics extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

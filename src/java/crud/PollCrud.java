@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Crud;
+package crud;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import model.Poll;
 import model.Question;
@@ -35,7 +36,14 @@ public class PollCrud {
             add.executeUpdate();
             add.close();
             c.close();
-            QuestionCrud question = new QuestionCrud();
+            ArrayList<Poll> polls = (ArrayList<Poll>) selectall();
+            int poll;
+            poll = polls.get(polls.size() - 1).pollid;
+            crud.QuestionCrud question = new crud.QuestionCrud();
+            for (int i = 0; i < questions.size(); i++) {
+                questions.get(i).poll = poll;
+
+            }
             question.addQuestions(questions);
 
         }
@@ -56,7 +64,7 @@ public class PollCrud {
             update.executeUpdate();
             update.close();
             c.close();
-            QuestionCrud question = new QuestionCrud();
+            crud.QuestionCrud question = new crud.QuestionCrud();
             question.updateQuestions(questions);
 
         }
@@ -108,13 +116,13 @@ public class PollCrud {
         }
 
     }
-    
+
     public Poll selectPollWithEverything(int id) throws SQLException {
         ResultSet resultSet;
         Poll poll = new Poll();
         try (Connection c = conn.connect()) {
             String selectSQL = "select * from poll where pollid = ?";
-            
+
             try (PreparedStatement select = c.prepareStatement(selectSQL)) {
                 select.setInt(1, id);
                 resultSet = select.executeQuery();
@@ -126,10 +134,9 @@ public class PollCrud {
                     poll.uissuspended = resultSet.getBoolean("uissuspended");
                     poll.close = resultSet.getBoolean("close");
 
-                    
                 }
-                QuestionCrud questionCrud = new QuestionCrud();
-                poll.questions = (ArrayList<Question>) questionCrud.selectByPollId(id);
+                crud.QuestionCrud questionCrud = new crud.QuestionCrud();
+                poll.questions = (LinkedList<Question>) questionCrud.selectByPollId(id);
                 System.out.println("Selection is done successfully");
                 select.close();
                 c.close();

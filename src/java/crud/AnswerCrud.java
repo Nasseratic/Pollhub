@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Crud;
+package crud;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -138,4 +138,32 @@ public class AnswerCrud {
 
     }
 
+    public int selectByQuestionContent(String content ) throws SQLException {
+        ResultSet resultSet;
+
+        List<Answer> answers = new ArrayList<>();
+        try (Connection c = conn.connect()) {
+            String selectSQL = "SELECT * FROM answer WHERE content= ? ";
+            try (PreparedStatement select = c.prepareStatement(selectSQL)) {
+                select.setString(1, content);
+                resultSet = select.executeQuery();
+                while (resultSet.next()) {
+                    Answer answer = new Answer();
+                    answer.answerid = resultSet.getInt("answerid");
+                    answer.question = resultSet.getInt("question");
+                    answer.content = resultSet.getString("content");
+                    answer.user = resultSet.getInt("user");
+                    answer.isrevailed = resultSet.getBoolean("isrevailed");
+
+                    answers.add(answer);
+                }
+                System.out.println("Selection is done successfully");
+                select.close();
+                c.close();
+                return answers.size();
+
+            }
+        }
+
+}
 }
