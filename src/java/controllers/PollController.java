@@ -164,7 +164,6 @@ public class PollController extends HttpServlet {
                     case "close": {
                         try {
                             int pollId = Integer.parseInt(request.getParameter("pollId"));
-
                             pollCrud.close(pollId);
                             out.println("true");
                             //response.sendRedirect("user-login.jsp"); need to know where

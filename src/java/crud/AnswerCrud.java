@@ -24,7 +24,7 @@ public class AnswerCrud {
 
     public void addAnswers(ArrayList<Answer> answers) throws SQLException {
 
-        try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO answer (question, content, user, isrevailed) VALUES ( ?, ?, ?, ?)")) {
+        try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO answer (question, content, user, isrevaild) VALUES ( ?, ?, ?, ?)")) {
             for (int i = 0; i < answers.size(); i++) {
 
                 add.setInt(1, answers.get(i).question);
@@ -44,7 +44,7 @@ public class AnswerCrud {
     }
 
     public void updateAnswers(ArrayList<Answer> answers) throws SQLException {
-        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE answer SET question = ?, content = ?, user = ?, isrevailed = ? WHERE answerid = ?")) {
+        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE answer SET question = ?, content = ?, user = ?, isrevaild = ? WHERE answerid = ?")) {
 
             for (int i = 0; i < answers.size(); i++) {
                 update.setInt(1, answers.get(i).question);
@@ -93,7 +93,7 @@ public class AnswerCrud {
                     answer.question = resultSet.getInt("question");
                     answer.content = resultSet.getString("content");
                     answer.user = resultSet.getInt("user");
-                    answer.isrevailed = resultSet.getBoolean("isrevailed");
+                    answer.isrevailed = resultSet.getBoolean("isrevaild");
 
                     answers.add(answer);
                 }
@@ -124,7 +124,7 @@ public class AnswerCrud {
                     answer.question = resultSet.getInt("question");
                     answer.content = resultSet.getString("content");
                     answer.user = resultSet.getInt("user");
-                    answer.isrevailed = resultSet.getBoolean("isrevailed");
+                    answer.isrevailed = resultSet.getBoolean("isrevaild");
 
                     answers.add(answer);
                 }
@@ -153,7 +153,7 @@ public class AnswerCrud {
                     answer.question = resultSet.getInt("question");
                     answer.content = resultSet.getString("content");
                     answer.user = resultSet.getInt("user");
-                    answer.isrevailed = resultSet.getBoolean("isrevailed");
+                    answer.isrevailed = resultSet.getBoolean("isrevaild");
 
                     answers.add(answer);
                 }
