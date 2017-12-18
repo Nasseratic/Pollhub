@@ -20,7 +20,7 @@
                         <span class="card-header-title">{{poll.title}}</span>
                     </div>
                     <div class="card-footer">
-                        <div class="card-footer-item"> <button class="button is-info is-outlined"> OPEN </button> </div>
+                        <div class="card-footer-item"> <a class="button is-info is-outlined" :href="'PollController?op=getPollWithEverything&pollid=' + poll.pollid" > OPEN </a> </div>
                     </div>
                 </div>
             </div>
