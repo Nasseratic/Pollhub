@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import model.User;
-
+import com.google.gson.Gson;
 /**
  *
  * @author y
@@ -117,6 +117,13 @@ public class UserController extends HttpServlet {
                        
                          
                         break;
+                    }
+                    case "selectAll": {
+                    crud.UserCrud user = new crud.UserCrud();
+                    List<User> users = user.selectall();
+                    Gson gson = new Gson();
+                    String output = gson.toJson(users);
+                    out.println(output);
                     }
                 default:
                     break;

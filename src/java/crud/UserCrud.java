@@ -92,7 +92,28 @@ public class UserCrud {
         }
 
     }
-
+    
+    public List<Integer> selectAllUsersId() throws SQLException {
+        ResultSet resultSet;
+        List<Integer> users = new ArrayList<>();
+        try (Connection c = conn.connect()) {
+            String selectSQL = "select userid from user";
+            try (PreparedStatement select = c.prepareStatement(selectSQL)) {
+                resultSet = select.executeQuery();
+                while (resultSet.next()) {
+                    int userId = resultSet.getInt("userid");
+                    users.add(userId);
+                }
+                System.out.println("Selection is done successfully");
+                select.close();
+                c.close();
+                return users;
+ 
+            }
+        }
+ 
+    }
+    
     public ArrayList<User> selectById(String username)   {
         ResultSet resultSet;
 
