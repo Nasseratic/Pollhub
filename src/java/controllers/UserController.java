@@ -60,9 +60,8 @@ public class UserController extends HttpServlet {
                             response.sendRedirect("user-login.jsp");
                         }
                       else  if (users.get(0).password.equals(pass)){
-                            
+                            System.out.println(users.get(0).userId);
                             HttpSession session = request.getSession(true);
-                            
                             session.setAttribute("session_username", username);
                             session.setAttribute("session_userid",users.get(0).userId);
                             session.setAttribute("session_IsAdmin",users.get(0).isAdmin );

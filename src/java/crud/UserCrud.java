@@ -78,6 +78,7 @@ public class UserCrud {
                     user.email = resultSet.getString("email");
                     user.password = resultSet.getString("password");
                     user.isAdmin = resultSet.getBoolean("isadmin");
+                    user.userId = resultSet.getInt("userid");
                     user.isSuspended = resultSet.getBoolean("issuspended");
                     users.add(user);
                 }
@@ -107,6 +108,7 @@ public class UserCrud {
                     user.email = resultSet.getString("email");
                     user.password = resultSet.getString("password");
                     user.isAdmin = resultSet.getBoolean("isadmin");
+                    user.userId = resultSet.getInt("userid");
                     user.isSuspended = resultSet.getBoolean("issuspended");
                     users.add(user);
                 }
