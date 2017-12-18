@@ -63,7 +63,7 @@
                 <br/>
             </div>
             <form v-bind:action=" 'PollController?op=add&json=' + json" method="POST">
-                <button class="button is-primary" type="submit"> Submit </button>
+                <button @mouseover="toJson()" class="button is-primary" type="submit"> Submit </button>
             </form>
         </div>
 

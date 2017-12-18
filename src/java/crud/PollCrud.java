@@ -140,7 +140,12 @@ public class PollCrud {
 
                 }
                 crud.QuestionCrud questionCrud = new crud.QuestionCrud();
-                poll.questions = (LinkedList<Question>) questionCrud.selectByPollId(id);
+                List<Question> temp = questionCrud.selectByPollId(id);
+                LinkedList<Question> result = new LinkedList<>();
+                for(int i = 0 ; i < temp.size() ; i++){
+                   result.add( temp.get(i) );
+                }
+                poll.questions = result;
                 System.out.println("Selection is done successfully");
                 select.close();
                 c.close();

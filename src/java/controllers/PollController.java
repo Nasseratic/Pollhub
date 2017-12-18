@@ -51,7 +51,7 @@ public class PollController extends HttpServlet {
             HttpSession session = request.getSession();
             String polls = "";
             Poll poll ;
-            int userId = Integer.parseInt((String) session.getAttribute("session_userid"));
+            int userId = (Integer) session.getAttribute("session_userid");
             if (userId < 0) {
                 response.sendRedirect("user-login.jsp");
             } else {
@@ -116,12 +116,13 @@ public class PollController extends HttpServlet {
                         break;
                     case "getPollWithEverything": {
                         try {
-                            int pollId = Integer.parseInt(request.getParameter("pollId"));
+                            int pollId = Integer.parseInt(request.getParameter("pollid"));
 
                             poll = pollCrud.selectPollWithEverything(pollId);
                             polls = json.toJson(poll);
                             request.setAttribute("poll", polls);
-                            //request.getRequestDispatcher("/ConfirmationServlet").forward(request, response);
+                            RequestDispatcher disp = request.getRequestDispatcher("poll.jsp");
+                            disp.forward(request, response);
                             //Need to know about that
                         } catch (SQLException ex) {
                             Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
