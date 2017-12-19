@@ -8,22 +8,22 @@
 
 
 <div class="container">
-    <h3 class="is-size-3 has-text-weight-bold">
-        MY POLLS 
+    <h3 class="is-size-3">
+        POLLS 
     </h3>
     <br/>
     <div class="container">
         <div id="myPolls" class="columns is-multiline">
-            <div class="column is-4" v-for="(poll , i ) of polls">
+            <div class="column is-4" v-for="(poll,i) of polls" v-if="(!poll.aissuspended && !poll.uissuspended) || <%= session.getAttribute("session_IsAdmin") %>" >
                 <div class="card">
                     <div class="card-header">
                         <span class="card-header-title">{{poll.title}}</span>
                     </div>
                     <div class="card-footer">
-                        <div class="card-footer-item"> <a class="button is-info is-outlined"  :disabled="poll.close"  :href="'PollController?op=getPollWithEverything&pollid=' + poll.pollid" > OPEN </a> </div>
-                        <div class="card-footer-item"> <button class="button is-warning" @click="close( poll.pollid , i )" > {{poll.close ? 'Open' : 'Close'}} </button> </div>
-                        <div class="card-footer-item"> <button class="button is-danger" @click="suspend( poll.pollid , i )" :disabled=" !<%= session.getAttribute("session_IsAdmin") %> && poll.aissuspended"> {{ (poll.uissuspended || poll.aissuspended)  ? 'Unsuspend' : 'Suspend'}} </button> </div>
-                        <div class="card-footer-item"> <a class="button is-primary" :href=" 'Statistics?pollid=' + poll.pollid " > Stat </a> </div>
+                        <div class="card-footer-item"> <a class="button is-info is-outlined" :href="'PollController?op=getPollWithEverything&pollid=' + poll.pollid" :disabled="poll.close" > OPEN </a> </div>
+                        
+                        <div v-if="<%= session.getAttribute("session_IsAdmin") %>" class="card-footer-item"> <button class="button is-warning" @click="close( poll.pollid , i )" > {{poll.close ? 'Open' : 'Close'}} </button> </div>
+                        <div v-if="<%= session.getAttribute("session_IsAdmin") %>" class="card-footer-item"> <button class="button is-danger" @click="suspend( poll.pollid , i )"> {{ (poll.uissuspended || poll.aissuspended)  ? 'Unsuspend' : 'Suspend'}} </button> </div>
 
                     </div>
                 </div>
@@ -42,11 +42,7 @@
         }, methods:{
             suspend(pollId , i){
                 axios.get( 'PollController?op=' +((this.polls[i].uissuspended || this.polls[i].aissuspended) ? 'unsuspend' : 'suspend' )+ '&pollId='+pollId ).then( res =>{
-                  if(<%= session.getAttribute("session_IsAdmin") %>){  
-                      this.polls[i].aissuspended = !this.polls[i].aissuspended;
-                  }else{
-                      this.polls[i].uissuspended = !this.polls[i].uissuspended;
-                  }
+                    this.polls[i].aissuspended = !this.polls[i].aissuspended;
                 });
             },close(pollId , i){
                
@@ -59,6 +55,6 @@
 
 </script>
 
-<%@include file="/footer.jsp" %>  
+<%@include file="/footer.jsp" %> 
 
 <!-- user data , edit user data ( if admin , check if there is new reports )  -->

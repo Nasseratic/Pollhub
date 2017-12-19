@@ -6,6 +6,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -19,6 +20,6 @@ public class Poll {
     public boolean aissuspended;
     public boolean uissuspended;
     public boolean close;
-    public ArrayList<Question> questions ;
+    public LinkedList<Question> questions ;
     
 }

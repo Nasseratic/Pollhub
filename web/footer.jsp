@@ -3,6 +3,7 @@
     Created on : Dec 7, 2017, 12:02:52 PM
     Author     : LENOVO
 --%>
+        </main>
         <footer class="footer">
           <div class="container">
             <div class="content has-text-centered">

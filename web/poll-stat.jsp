@@ -8,11 +8,14 @@
 
 <!-- registration form -->
 
+<%= request.getAttribute("html")%>
 
 <script>
     
     new Vue({
-        
+        data(){
+            
+        }
     });
     
 </script>

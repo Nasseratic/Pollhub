@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Crud;
+package crud;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ public class QuestionCrud {
     connection conn = new connection();
 
     public void addQuestions(ArrayList<Question> questions) throws SQLException {
-        try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO user (content, type, poll, answer)VALUES( ?, ?, ?, ?)")) {
+        try (Connection c = conn.connect(); PreparedStatement add = c.prepareStatement("INSERT INTO question (content, type, poll, answer)VALUES( ?, ?, ?, ?)")) {
             for (int i = 0; i < questions.size(); i++) {
 
                 add.setString(1, questions.get(i).content);
@@ -41,7 +41,7 @@ public class QuestionCrud {
     }
 
     public void updateQuestions(ArrayList<Question> questions) throws SQLException {
-        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE user SET content = ?, type = ?, poll = ?, answer = ? WHERE questionid = ?")) {
+        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE question SET content = ?, type = ?, poll = ?, answer = ? WHERE questionid = ?")) {
 
             for (int i = 0; i < questions.size(); i++) {
                 update.setString(1, questions.get(i).content);
@@ -123,6 +123,7 @@ public class QuestionCrud {
                     question.content = resultSet.getString("content");
                     question.type = resultSet.getString("type");
                     question.poll = resultSet.getInt("poll");
+                    question.answer = resultSet.getString("answer");
 
                     questions.add(question);
                 }
