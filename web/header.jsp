@@ -35,7 +35,7 @@ Author     : LENOVO
                     <a v-if="isAuth" class="navbar-item" href="PollController?op=getAllForSystem">
                         All Polls
                     </a>
-                    <a v-if="isAdmin" class="navbar-item" href="PollController?op=getAllForSystem">
+                    <a v-if="isAdmin" class="navbar-item" href="users.jsp">
                         Users
                     </a>
                     <a v-if="isAdmin" class="navbar-item" href="PollController?op=getAllForSystem">
