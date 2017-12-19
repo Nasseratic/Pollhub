@@ -39,13 +39,12 @@ public class UsersMessagesCrud {
     }
 
     public void update(int userId, int messageId) {
-        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE massage_users SET ischecked=? WHERE massageid=?, userid=?")) {
+        try (Connection c = conn.connect(); PreparedStatement update = c.prepareStatement("UPDATE massage_users SET ischecked=? WHERE massageid=? AND userid=?")) {
             update.setBoolean(1, true);
             update.setInt(2, messageId);
             update.setInt(3, userId);
             update.executeUpdate();
             update.close();
-            c.commit();
             c.close();
             System.out.println("Insert is done successfully tp massage_users table");
         } catch (SQLException ex) {
@@ -62,7 +61,6 @@ public class UsersMessagesCrud {
                 delete.executeUpdate();
                 System.out.println("delete is done successfully");
                 delete.close();
-                c.commit();
             }
             c.close();
         }
@@ -80,6 +78,7 @@ public class UsersMessagesCrud {
                 MessageCrud msg = new MessageCrud();
                 while (resultSet.next()) {
                     Message message = msg.selectById(resultSet.getInt("massageid")).get(0);
+                    message.ischecked = isChecked;
                     messages.add(message);
                 }
                 System.out.println("Selection is done successfully");

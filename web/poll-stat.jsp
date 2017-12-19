@@ -8,6 +8,7 @@
 
 <!-- registration form -->
 
+<%= request.getAttribute("html")%>
 
 <script>
     

@@ -7,7 +7,7 @@ Author     : LENOVO
 <%@include file="/header.jsp" %>
 
 <div id="poll" class="container">
-    <h2 class="is-size-2 has-text-weight-bold is-uppercase"> {{poll.title}} </h2>
+    <h2 class="is-size-2 has-text-weight-bold is-uppercase"> {{poll.title}}  </h2>
     <div class="card" style="padding: 15px; margin: 5px;" v-for="(question,i) of poll.questions">
         <h4 class="is-size-4 has-text-weight-semibold" >{{question.content}}</h4>
         <div v-if="question.type == 'text'"> 

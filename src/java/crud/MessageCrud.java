@@ -64,7 +64,6 @@ public class MessageCrud {
                 while (resultSet.next()) {
                     Message message = new Message();
                     message.content = resultSet.getString("content");
-                    //message.ischecked = resultSet.getBoolean("ischecked");
                     messages.add(message);
                 }
                 System.out.println("Selection is done successfully");
@@ -86,7 +85,7 @@ public class MessageCrud {
                 while (resultSet.next()) {
                     Message message = new Message();
                     message.content = resultSet.getString("content");
-                    //message.ischecked = resultSet.getBoolean("ischecked");
+                    message.massageid = resultSet.getInt("massageid");
                     messages.add(message);
                 }
                 System.out.println("Selection is done successfully");

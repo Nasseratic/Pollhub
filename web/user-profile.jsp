@@ -23,6 +23,7 @@
                         <div class="card-footer-item"> <a class="button is-info is-outlined"  :disabled="poll.close"  :href="'PollController?op=getPollWithEverything&pollid=' + poll.pollid" > OPEN </a> </div>
                         <div class="card-footer-item"> <button class="button is-warning" @click="close( poll.pollid , i )" > {{poll.close ? 'Open' : 'Close'}} </button> </div>
                         <div class="card-footer-item"> <button class="button is-danger" @click="suspend( poll.pollid , i )" :disabled=" !<%= session.getAttribute("session_IsAdmin") %> && poll.aissuspended"> {{ (poll.uissuspended || poll.aissuspended)  ? 'Unsuspend' : 'Suspend'}} </button> </div>
+                        <div class="card-footer-item"> <a class="button is-primary" :href=" 'Statistics?pollid=' + poll.pollid " > Stat </a> </div>
 
                     </div>
                 </div>

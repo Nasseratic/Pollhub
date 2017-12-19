@@ -138,14 +138,15 @@ public class AnswerCrud {
 
     }
 
-    public int selectByQuestionContent(String content ) throws SQLException {
+    public int selectByQuestionContent(String content, int id ) throws SQLException {
         ResultSet resultSet;
 
         List<Answer> answers = new ArrayList<>();
         try (Connection c = conn.connect()) {
-            String selectSQL = "SELECT * FROM answer WHERE content= ? ";
+            String selectSQL = "SELECT * FROM answer WHERE content= ? and question=? ";
             try (PreparedStatement select = c.prepareStatement(selectSQL)) {
                 select.setString(1, content);
+                select.setInt(2, id);
                 resultSet = select.executeQuery();
                 while (resultSet.next()) {
                     Answer answer = new Answer();
@@ -154,10 +155,12 @@ public class AnswerCrud {
                     answer.content = resultSet.getString("content");
                     answer.user = resultSet.getInt("user");
                     answer.isrevailed = resultSet.getBoolean("isrevaild");
-
+                      System.out.println(answer.content+"555555555555555555555555555555555555555555555555");
                     answers.add(answer);
+                    
                 }
                 System.out.println("Selection is done successfully");
+                
                 select.close();
                 c.close();
                 return answers.size();

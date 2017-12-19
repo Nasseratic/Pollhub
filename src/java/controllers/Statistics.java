@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,32 +44,63 @@ public class Statistics extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            //String p = request.getParameter("pollid");
-           // int pollid = Integer.parseInt(p);
+            String output = "";
+            String p = request.getParameter("pollid");
+            int pollid = Integer.parseInt(p);
             System.out.println("zizomody done--------------------------------");
             PollCrud po = new PollCrud();
             System.out.println("zizomody done-------------------------------3333333333333333333333333-");
             Poll poll;
-            poll = po.selectPollWithEverything(1);
+            poll = po.selectPollWithEverything(pollid);
             ArrayList<ArrayList<Integer>> questions_Answers = new ArrayList<>();
+            output += "<h1 class='h1'> Number of questions is ";
+            output += poll.questions.size();
+            output += "</h1>";
             for (int i = 0; i < poll.questions.size(); i++) {
+                output += "<h3 class='h3'>";
+                output += poll.questions.get(i).content;
+                output += "</h3>";
                 String answer = poll.questions.get(i).answer;
+//                 out.println(answer);
                 String answers[];
                 answers = answer.split("/");
-                
+                AnswerCrud ans = new AnswerCrud();
                 ArrayList<Integer> freq = new ArrayList<>();
-                for (String answer1 : answers) {
-                    AnswerCrud ans = new AnswerCrud();
-                    freq.add(ans.selectByQuestionContent(answer1));
-                }
-                questions_Answers.add(freq);
-                freq.clear();
+                if (!"text".equals(poll.questions.get(i).type)) {
+                    output += "<table class=\"table is-borderd \">\n"
+                            + "        <thead>\n"
+                            + "            <tr>\n"
+                            + "                <th>Answer</th>\n"
+                            + "                <th>Freq</th>\n"
+                            + "            </tr>\n"
+                            + "        </thead>\n";
+                    output += "        <tbody>";
+                    for (String answer1 : answers) {
+//                     out.println(answer1);
+                        if (!answer1.isEmpty()) {
+                            freq.add(ans.selectByQuestionContent(answer1, poll.questions.get(i).questionid));
+                            output += "<tr>";
+                            output += "<td>";
+                            output += answer1;
+                            output += "</td>";
+                            output += "<td>";
+                            output += ans.selectByQuestionContent(answer1, poll.questions.get(i).questionid);
+                            output += "</td>";
+                            output += "</tr>";
+                        }
+                    }
+                    output += "</tbody></table>";
+                    freq.clear();
 
+                } else {
+                    output += ans.selectByQuestionId(poll.questions.get(i).questionid).size();
+
+                }
             }
-            
-           String stat= new Gson().toJson(questions_Answers);
-           out.println(stat);
-                   System.out.println("controllers.Statistics.processRequest()777777777777777777777777777777777777  "+questions_Answers.size()+"    hhhhhhhhhhhhhhhhhhh" );
+
+            request.setAttribute("html", output);
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("poll-stat.jsp");
+            requestDispatcher.forward(request, response);
 
         }
     }

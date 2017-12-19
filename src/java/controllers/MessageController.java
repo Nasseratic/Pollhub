@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +41,6 @@ public class MessageController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String op = request.getParameter("op");
             MessageCrud msg = new MessageCrud();
-            out.print(op);
             if (op != null) {
                 switch (op) {
                     case "add": {
@@ -78,17 +78,42 @@ public class MessageController extends HttpServlet {
                     }
                     case "update": {
                         int messageid = Integer.parseInt(request.getParameter("messageid"));
-                        String content = request.getParameter("content");
-                        boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
-                        msg.update(messageid, content);
+//                        String content = request.getParameter("content");
+//                        boolean isChecked = Boolean.getBoolean(request.getParameter("isChecked"));
+//                        msg.update(messageid, content);
+                        UsersMessagesCrud crudOfUsersMessages = new UsersMessagesCrud();
+                        int userId = (int) request.getSession().getAttribute("session_userid");
+                        crudOfUsersMessages.update(userId, messageid);
+                        Message message = msg.selectById(messageid).get(0);
+                        request.setAttribute("message", message);
+                        RequestDispatcher RD = request.getRequestDispatcher("MessageController?op=selectByUserId");
+                        RD.forward(request, response);
                         break;
                     }
                     case "selectAll":
-                        msg.selectall();
+                        out.print(msg.selectall().toString());
                         break;
                     case "selectById": {
                         int messageid = Integer.parseInt(request.getParameter("messageid"));
-                        msg.selectById(messageid);
+                        out.print(msg.selectById(messageid).toString());
+                        break;
+                    }
+                    case "selectByUserId": {
+                        UsersMessagesCrud crudOfUsersMessages = new UsersMessagesCrud();
+                        int userId = (int) request.getSession().getAttribute("session_userid");
+                        List<Message> messages = crudOfUsersMessages.selectAllMessages(userId, false);
+                        messages.addAll(crudOfUsersMessages.selectAllMessages(userId, true));
+                        request.setAttribute("listOfMessages", messages);
+                        RequestDispatcher RD = request.getRequestDispatcher("view-my-message.jsp");
+                        RD.forward(request, response);
+//                        out.print(crudOfUsersMessages.selectAllMessages(userId, false));
+                        break;
+                    }
+                    case "selectNumberOfMessages": {
+                        UsersMessagesCrud crudOfUsersMessages = new UsersMessagesCrud();
+                        int userId = (int) request.getSession().getAttribute("session_userid");
+                        List<Message> messages = crudOfUsersMessages.selectAllMessages(userId, false);
+                        out.print(messages.size());
                         break;
                     }
                     default:
