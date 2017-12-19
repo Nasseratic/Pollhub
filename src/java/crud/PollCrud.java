@@ -192,6 +192,7 @@ public class PollCrud {
             try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE poll SET aissuspended = ? WHERE pollid = ?")) {
                 suspend.setBoolean(1, true);
                 suspend.setInt(2, pollId);
+                suspend.executeUpdate();
                 suspend.close();
                 c.close();
             }
@@ -199,6 +200,7 @@ public class PollCrud {
             try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE poll SET uissuspended = ? WHERE pollid = ?")) {
                 suspend.setBoolean(1, true);
                 suspend.setInt(2, pollId);
+                suspend.executeUpdate();
                 suspend.close();
                 c.close();
             }
@@ -211,6 +213,7 @@ public class PollCrud {
             try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE poll SET aissuspended = ? WHERE pollid = ?")) {
                 suspend.setBoolean(1, false);
                 suspend.setInt(2, pollId);
+                suspend.executeUpdate();
                 suspend.close();
                 c.close();
             }
@@ -218,6 +221,7 @@ public class PollCrud {
             try (Connection c = conn.connect(); PreparedStatement suspend = c.prepareStatement("UPDATE poll SET uissuspended = ? WHERE pollid = ?")) {
                 suspend.setBoolean(1, false);
                 suspend.setInt(2, pollId);
+                suspend.executeUpdate();
                 suspend.close();
                 c.close();
             }
@@ -230,6 +234,7 @@ public class PollCrud {
         try (Connection c = conn.connect(); PreparedStatement close = c.prepareStatement("UPDATE poll SET close = ? WHERE pollid = ?")) {
             close.setBoolean(1, true);
             close.setInt(2, pollId);
+            close.executeUpdate();
             close.close();
             c.close();
 
@@ -242,6 +247,7 @@ public class PollCrud {
         try (Connection c = conn.connect(); PreparedStatement open = c.prepareStatement("UPDATE poll SET close = ? WHERE pollid = ?")) {
             open.setBoolean(1, false);
             open.setInt(2, pollId);
+            open.executeUpdate();
             open.close();
             c.close();
 

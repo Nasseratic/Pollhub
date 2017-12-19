@@ -11,21 +11,27 @@ Author     : LENOVO
     <div class="card" style="padding: 15px; margin: 5px;" v-for="(question,i) of poll.questions">
         <h4 class="is-size-4 has-text-weight-semibold" >{{question.content}}</h4>
         <div v-if="question.type == 'text'"> 
-            <input class="input" @keyup="addAnswer( question.questionid , answer)" />
+            <input class="input" @keyup="addAnswer( question.type,question.questionid , answer)" />
         </div>
         <div v-if="question.type == 'checkbox'"> 
-            <label style="display: block" v-for="answer of question.answer">
-                <input type="checkbox" @click="addAnswer( question.questionid , answer)">
+            <label style="display: block" v-for="(answer,j) of question.answer">
+                <input type="checkbox" @click="addAnswer( question.type , question.questionid , answer , j )">
                 {{answer}}
             </label>
         </div>
         <div v-if="question.type == 'mcq'"> 
             <label style="display: block" v-for="answer of question.answer">
-                <input type="radio" :name="'answer'+i" @click="addAnswer( question.questionid , answer)" >
+                <input type="radio" :name="'answer'+i" @click="addAnswer( question.type , question.questionid , answer)" >
                 {{answer}}
             </label>
         </div>
     </div>
+    <br/>
+    <label style="display: block">
+                <input type="checkbox" :checked="isrevailed" @click="revile()" >
+                Those answers will be reviled 
+    </label>
+    <br/>
     <a class="button is-primary" @mouseover="toJson()" :href="'PollController?op=answerPoll&json=' + json" > submit </a>
 
 </div>
@@ -46,7 +52,7 @@ Author     : LENOVO
                     type: null,
                     poll: null,
                     answer: null,
-                    answers: []
+                    answers: {}
                 },
                 isrevailed : true,
                 json : ''
@@ -56,14 +62,43 @@ Author     : LENOVO
                 e.answer = e.answer.split('/').filter( e => { return e !== '' } );
             });
         },methods:{
-            addAnswer(qId , content){
-                this.answers.answers.push( { 
-                    question: qId ,
-                    user: <%= session.getAttribute("session_userid") %> ,
-                    content: content ,
-                    isrevailed : this.isrevailed } )
+            addAnswer( type , qId , content , index = 0 ){
+                if(type === 'checkbox'){
+                    if( ! this.answers.answers[qId]){
+                        this.answers.answers[qId] = [];
+                    }
+                    this.answers.answers[qId][index] =({ 
+                        question: qId ,
+                        user: <%= session.getAttribute("session_userid") %> ,
+                        content: content ,
+                        isrevailed : this.isrevailed } )
+                }else{
+                    this.answers.answers[qId] = { 
+                        question: qId ,
+                        user: <%= session.getAttribute("session_userid") %> ,
+                        content: content ,
+                        isrevailed : this.isrevailed };
+                }
             },toJson(){
+                let arr = [];
+                for (var key in this.answers.answers) {
+                    if(this.answers.answers[key] instanceof Array ){
+                        this.answers.answers[key].forEach( e2 => { arr.push( e2 ); } );
+                    }else{
+                        arr.push(this.answers.answers[key]);
+                    }
+                }
+                this.answers.answers = arr;
                 this.json = JSON.stringify( this.answers );
+            },revile(){
+                this.isrevailed = !this.isrevailed; 
+                for (var key in this.answers.answers) {
+                    if(this.answers.answers[key] instanceof Array ){
+                        this.answers.answers[key].forEach( e2 => { e2.isrevailed = this.isrevailed; } );
+                    }else{
+                        this.answers.answers[key].isrevailed = this.isrevailed
+                    }
+                }
             }
         }
     });

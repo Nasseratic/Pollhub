@@ -72,6 +72,8 @@ public class PollController extends HttpServlet {
 
                                 pollCrud.add(poll.title, userId, poll.aissuspended, poll.uissuspended, poll.close, questions);
                                 ///response.sendRedirect("user-login.jsp"); need to know where
+                                RequestDispatcher disp = request.getRequestDispatcher("PollController?op=getAllForProfile");
+                                disp.forward(request, response);
                             } catch (SQLException ex) {
                                 Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
                                 //response.sendRedirect("user-login.jsp"); need to know where
@@ -95,6 +97,19 @@ public class PollController extends HttpServlet {
                     request.setAttribute("polls", polls);
                     //response.sendRedirect("user-login.jsp"); need to know where
                     break;
+                    case "getAllForProfile": {
+                        try {
+                            polls = json.toJson(pollCrud.selectByUserId(userId));
+                            request.setAttribute("polls", polls);
+                            RequestDispatcher disp = request.getRequestDispatcher("user-profile.jsp");
+                            disp.forward(request, response);
+                            //request.getRequestDispatcher("/PollController").forward(request, response);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);
+                            //response.sendRedirect("user-login.jsp"); need to know where
+                        }
+                    }
+                    break;
                     case "answerPoll":
                         Question question = json.fromJson(request.getParameter("json"), Question.class);
                         AnswerCrud answerCrud = new AnswerCrud();
@@ -106,6 +121,8 @@ public class PollController extends HttpServlet {
 
                                 }
                                 answerCrud.addAnswers(answers);
+                                RequestDispatcher disp = request.getRequestDispatcher("PollController?op=getAllForSystem");
+                                disp.forward(request, response);
                                 //response.sendRedirect("user-login.jsp"); need to know where
                             } catch (SQLException ex) {
                                 Logger.getLogger(PollController.class.getName()).log(Level.SEVERE, null, ex);

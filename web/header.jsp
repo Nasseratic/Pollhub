@@ -21,7 +21,7 @@ Author     : LENOVO
         <nav class="navbar is-fixed-top card" style="opacity: 0;" v-bind:style="{ opacity: 1 }">
             <div class="navbar-brand">
                 <a class="navbar-item" href="index.jsp">
-                    <h3> LOGO </h3>
+                    <img src="assets/logo.png" style="min-width: 100px; min-height: 100%" >
                 </a>
                 <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
                     <span></span>
@@ -32,10 +32,17 @@ Author     : LENOVO
 
             <div id="navbarExampleTransparentExample" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="https://bulma.io/">
-                        Home
+                    <a v-if="isAuth" class="navbar-item" href="PollController?op=getAllForSystem">
+                        All Polls
+                    </a>
+                    <a v-if="isAdmin" class="navbar-item" href="PollController?op=getAllForSystem">
+                        Users
+                    </a>
+                    <a v-if="isAdmin" class="navbar-item" href="PollController?op=getAllForSystem">
+                        <span style="margin-right: 5px;">Reports</span>  <span class="tag is-danger"> 0 </span>
                     </a>
                 </div>
+                
 
                 <div class="navbar-end">
                     <div class="navbar-item">
@@ -69,12 +76,18 @@ Author     : LENOVO
                                 </a>
                             </p>
                             <p class="control">
-                                <a class="button" href="user-login.jsp">
+                                <a class="button" href="PollController?op=getAllForProfile">
                                     <span class="icon">
                                         <i class="ion-person"></i>
                                     </span>
                                     <span>
                                         Welcome, {{username}}
+                                    </span>
+                                </a>
+                                <a class="button is-info" href="PollController?op=getAllForProfile">
+                                    <span> 0 </span>
+                                    <span class="icon">
+                                         <i class="ion-email"></i>
                                     </span>
                                 </a>
                             </p>
@@ -100,7 +113,11 @@ Author     : LENOVO
         new Vue({
             el:"nav",
             data(){
-                return { isAuth: <%= session.getAttribute("session_valid") %> , username: <%= "\'"+session.getAttribute("session_username")+"\'" %> };
+                return { 
+                    isAuth: <%= session.getAttribute("session_valid") %> ,
+                    username: <%= "\'"+session.getAttribute("session_username")+"\'" %> ,
+                    isAdmin: <%= session.getAttribute("session_IsAdmin") %>
+                };
             }
         });
     </script>

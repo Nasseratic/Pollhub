@@ -41,7 +41,7 @@
         data: {
             listOfUsers: []
         }, created() {
-            axios.get("/IA-Test/UserController?op=selectAll").then(res => {
+            axios.get("User?op=selectAll").then(res => {
                 this.listOfUsers = res.data;
             }).catch(() => {
                 console.log("Can't get the users");

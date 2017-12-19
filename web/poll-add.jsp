@@ -120,11 +120,13 @@
                                 e['answers'] = null;
                                 e['poll'] = null;
                                 e['questionid'] = null;
-                                let v = "";
-                                e['answer'].forEach( e => {
-                                    v= v+'/'+e;
-                                });
-                                e['answer'] = v;
+                                if( e['answer'] instanceof Array){
+                                    let v = "";
+                                    e['answer'].forEach( e => {
+                                        v= v+'/'+e;
+                                    });
+                                    e['answer'] = v;
+                                }
                                 return e;
                             })
                 });
